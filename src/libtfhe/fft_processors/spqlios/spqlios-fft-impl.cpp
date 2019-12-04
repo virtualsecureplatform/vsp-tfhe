@@ -72,19 +72,19 @@ namespace {
 //...
 //|cos0,cos2,cos4,cos6|sin0,sin2,sin4,sin6|cos8,cos10,cos12,cos14|.... -> n/4
 
-    inline void dotp4(double *__restrict res, const double *__restrict a, const double *__restrict b) {
+    inline void dotp4(double * res, const double * a, const double * b) {
         for (int32_t i = 0; i < 4; i++) res[i] = a[i] * b[i];
     }
 
-    inline void add4(double *__restrict res, const double *__restrict a, const double *__restrict b) {
+    inline void add4(double * res, const double * a, const double * b) {
         for (int32_t i = 0; i < 4; i++) res[i] = a[i] + b[i];
     }
 
-    inline void sub4(double *__restrict res, const double *__restrict a, const double *__restrict b) {
+    inline void sub4(double * res, const double * a, const double * b) {
         for (int32_t i = 0; i < 4; i++) res[i] = a[i] - b[i];
     }
 
-    inline void copy4(double *__restrict res, const double *__restrict a) {
+    inline void copy4(double * res, const double * a) {
         for (int32_t i = 0; i < 4; i++) res[i] = a[i];
     }
 
