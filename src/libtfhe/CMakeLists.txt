@@ -51,5 +51,9 @@ foreach (FFT_PROCESSOR IN LISTS FFT_PROCESSORS)
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
-endforeach (FFT_PROCESSOR IN LISTS FFT_PROCESSORS) 
 
+    target_include_directories(tfhe-${FFT_PROCESSOR}
+        PUBLIC
+            include/
+        )
+endforeach (FFT_PROCESSOR IN LISTS FFT_PROCESSORS)
