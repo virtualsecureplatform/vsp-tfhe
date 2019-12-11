@@ -13,4 +13,6 @@ set(HEADERS
     )
 
 add_library(tfhe-fft-fftw OBJECT ${SRCS} ${HEADERS})
-set_property(TARGET tfhe-fft-fftw PROPERTY POSITION_INDEPENDENT_CODE ON)
+if (BUILD_SHARED_LIBS)
+    set_property(TARGET tfhe-fft-fftw PROPERTY POSITION_INDEPENDENT_CODE ON)
+endif(BUILD_SHARED_LIBS)

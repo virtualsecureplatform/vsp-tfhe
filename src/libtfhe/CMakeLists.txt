@@ -35,13 +35,17 @@ set(SRCS
 
 
 add_library(tfhe-core OBJECT ${SRCS} ${TFHE_HEADERS})
-set_property(TARGET tfhe-core PROPERTY POSITION_INDEPENDENT_CODE ON)
+if (BUILD_SHARED_LIBS)
+    set_property(TARGET tfhe-core PROPERTY POSITION_INDEPENDENT_CODE ON)
+endif(BUILD_SHARED_LIBS)
 
 foreach (FFT_PROCESSOR IN LISTS FFT_PROCESSORS) 
     add_library(tfhe-${FFT_PROCESSOR} SHARED
 	$<TARGET_OBJECTS:tfhe-core>
         $<TARGET_OBJECTS:tfhe-fft-${FFT_PROCESSOR}>)
-    set_property(TARGET tfhe-${FFT_PROCESSOR} PROPERTY POSITION_INDEPENDENT_CODE ON)
+    if (BUILD_SHARED_LIBS)
+        set_property(TARGET tfhe-${FFT_PROCESSOR} PROPERTY POSITION_INDEPENDENT_CODE ON)
+    endif(BUILD_SHARED_LIBS)
 
     if (FFT_PROCESSOR STREQUAL "fftw")
         target_link_libraries(tfhe-fftw ${FFTW_LIBRARIES})

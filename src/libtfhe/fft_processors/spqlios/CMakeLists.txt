@@ -20,7 +20,7 @@ set(SRCS_FMA
     lagrangehalfc_impl.cpp
     lagrangehalfc_impl_fma.s
     )
-    
+
 set(HEADERS
     spqlios-fft.h
     lagrangehalfc_impl.h
@@ -28,10 +28,14 @@ set(HEADERS
 
 if (ENABLE_SPQLIOS_AVX) 
     add_library(tfhe-fft-spqlios-avx OBJECT ${SRCS_AVX} ${HEADERS})
-    set_property(TARGET tfhe-fft-spqlios-avx PROPERTY POSITION_INDEPENDENT_CODE ON)
+    if (BUILD_SHARED_LIBS)
+        set_property(TARGET tfhe-fft-spqlios-avx PROPERTY POSITION_INDEPENDENT_CODE ON)
+    endif(BUILD_SHARED_LIBS)
 endif (ENABLE_SPQLIOS_AVX) 
 
 if (ENABLE_SPQLIOS_FMA) 
     add_library(tfhe-fft-spqlios-fma OBJECT ${SRCS_FMA} ${HEADERS})
-    set_property(TARGET tfhe-fft-spqlios-fma PROPERTY POSITION_INDEPENDENT_CODE ON)
+    if (BUILD_SHARED_LIBS)
+        set_property(TARGET tfhe-fft-spqlios-fma PROPERTY POSITION_INDEPENDENT_CODE ON)
+    endif(BUILD_SHARED_LIBS)
 endif (ENABLE_SPQLIOS_FMA)

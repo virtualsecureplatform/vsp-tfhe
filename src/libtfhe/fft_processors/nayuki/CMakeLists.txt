@@ -17,7 +17,7 @@ set(SRCS_AVX
     fft_processor_nayuki.cpp
     lagrangehalfc_impl.cpp
     )
-    
+
 set(HEADERS
     fft.h
     lagrangehalfc_impl.h
@@ -25,10 +25,14 @@ set(HEADERS
 
 if (ENABLE_NAYUKI_PORTABLE) 
     add_library(tfhe-fft-nayuki-portable OBJECT ${SRCS_PORTABLE} ${HEADERS})
-    set_property(TARGET tfhe-fft-nayuki-portable PROPERTY POSITION_INDEPENDENT_CODE ON)
+    if (BUILD_SHARED_LIBS)
+        set_property(TARGET tfhe-fft-nayuki-portable PROPERTY POSITION_INDEPENDENT_CODE ON)
+    endif(BUILD_SHARED_LIBS)
 endif (ENABLE_NAYUKI_PORTABLE)
 
 if (ENABLE_NAYUKI_AVX) 
     add_library(tfhe-fft-nayuki-avx OBJECT ${SRCS_AVX} ${HEADERS})
-    set_property(TARGET tfhe-fft-nayuki-avx PROPERTY POSITION_INDEPENDENT_CODE ON)
+    if (BUILD_SHARED_LIBS)
+        set_property(TARGET tfhe-fft-nayuki-avx PROPERTY POSITION_INDEPENDENT_CODE ON)
+    endif(BUILD_SHARED_LIBS)
 endif (ENABLE_NAYUKI_AVX) 
