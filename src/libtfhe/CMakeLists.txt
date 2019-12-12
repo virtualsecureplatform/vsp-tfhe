@@ -58,6 +58,6 @@ foreach (FFT_PROCESSOR IN LISTS FFT_PROCESSORS)
 
     target_include_directories(tfhe-${FFT_PROCESSOR}
         PUBLIC
-            include/
+            ../include/
         )
 endforeach (FFT_PROCESSOR IN LISTS FFT_PROCESSORS)
