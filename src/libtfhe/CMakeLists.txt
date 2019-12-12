@@ -40,7 +40,7 @@ if (BUILD_SHARED_LIBS)
 endif(BUILD_SHARED_LIBS)
 
 foreach (FFT_PROCESSOR IN LISTS FFT_PROCESSORS) 
-    add_library(tfhe-${FFT_PROCESSOR} SHARED
+    add_library(tfhe-${FFT_PROCESSOR}
 	$<TARGET_OBJECTS:tfhe-core>
         $<TARGET_OBJECTS:tfhe-fft-${FFT_PROCESSOR}>)
     if (BUILD_SHARED_LIBS)
