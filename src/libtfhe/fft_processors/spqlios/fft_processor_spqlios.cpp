@@ -121,6 +121,7 @@ FFT_Processor_Spqlios::~FFT_Processor_Spqlios() {
 }
 
 thread_local FFT_Processor_Spqlios fftp1024(1024);
+thread_local FFT_Processor_Spqlios fftp2048(2048);
 
 /**
  * FFT functions 
@@ -133,4 +134,14 @@ EXPORT void TorusPolynomial_ifft(LagrangeHalfCPolynomial *result, const TorusPol
 }
 EXPORT void TorusPolynomial_fft(TorusPolynomial *result, const LagrangeHalfCPolynomial *p) {
     fftp1024.execute_direct_torus32(result->coefsT, ((LagrangeHalfCPolynomial_IMPL *) p)->coefsC);
+}
+
+EXPORT void IntPolynomiallvl2_ifft(LagrangeHalfCPolynomial *result, const IntPolynomial *p) {
+    fftp2048.execute_reverse_int(((LagrangeHalfCPolynomial_IMPL *) result)->coefsC, p->coefs);
+}
+EXPORT void TorusPolynomiallvl2_ifft(LagrangeHalfCPolynomial *result, const TorusPolynomial *p) {
+    fftp2048.execute_reverse_torus32(((LagrangeHalfCPolynomial_IMPL *) result)->coefsC, p->coefsT);
+}
+EXPORT void TorusPolynomiallvl2_fft(TorusPolynomial *result, const LagrangeHalfCPolynomial *p) {
+    fftp2048.execute_direct_torus32(result->coefsT, ((LagrangeHalfCPolynomial_IMPL *) p)->coefsC);
 }

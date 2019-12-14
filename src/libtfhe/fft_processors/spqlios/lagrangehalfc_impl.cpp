@@ -5,9 +5,11 @@ using namespace std;
 
 
 LagrangeHalfCPolynomial_IMPL::LagrangeHalfCPolynomial_IMPL(const int32_t N) {
-    assert(N == 1024);
     coefsC = new double[N];
-    proc = &fftp1024;
+    assert(N==1024 || N==2048);
+    if(N==1024) proc = &fftp1024; //lvl0
+    else if(N==2048) proc = &fftp2048; //lvl2
+    else exit(1);
 }
 
 LagrangeHalfCPolynomial_IMPL::~LagrangeHalfCPolynomial_IMPL() {

@@ -22,6 +22,10 @@ EXPORT void IntPolynomial_ifft(LagrangeHalfCPolynomial* result, const IntPolynom
 EXPORT void TorusPolynomial_ifft(LagrangeHalfCPolynomial* result, const TorusPolynomial* p);
 EXPORT void TorusPolynomial_fft(TorusPolynomial* result, const LagrangeHalfCPolynomial* p);
 
+EXPORT void IntPolynomiallvl2_ifft(LagrangeHalfCPolynomial* result, const IntPolynomial* p);
+EXPORT void TorusPolynomiallvl2_ifft(LagrangeHalfCPolynomial* result, const TorusPolynomial* p);
+EXPORT void TorusPolynomiallvl2_fft(TorusPolynomial* result, const LagrangeHalfCPolynomial* p);
+
 //MISC OPERATIONS
 /** sets to zero */
 EXPORT void LagrangeHalfCPolynomialClear(LagrangeHalfCPolynomial* result);
@@ -40,6 +44,8 @@ EXPORT void LagrangeHalfCPolynomialAddTorusConstant(LagrangeHalfCPolynomial* res
 EXPORT void torusPolynomialMultFFT(TorusPolynomial* result, const IntPolynomial* poly1, const TorusPolynomial* poly2);
 EXPORT void torusPolynomialAddMulRFFT(TorusPolynomial* result, const IntPolynomial* poly1, const TorusPolynomial* poly2);
 EXPORT void torusPolynomialSubMulRFFT(TorusPolynomial* result, const IntPolynomial* poly1, const TorusPolynomial* poly2);
+
+EXPORT void torusPolynomialMultlvl2FFT(TorusPolynomial* result, const IntPolynomial* poly1, const TorusPolynomial* poly2);
 
 /** termwise multiplication in Lagrange space */
 EXPORT void LagrangeHalfCPolynomialMul(

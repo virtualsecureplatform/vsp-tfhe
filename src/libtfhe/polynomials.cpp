@@ -57,6 +57,16 @@ EXPORT void torusPolynomialMultFFT(TorusPolynomial* result, const IntPolynomial*
     TorusPolynomial_fft(result, tmp+2);
     delete_LagrangeHalfCPolynomial_array(3,tmp);
 }
+EXPORT void torusPolynomialMultlvl2FFT(TorusPolynomial* result, const IntPolynomial* poly1, const TorusPolynomial* poly2) {
+    const int32_t N = poly1->N;
+    LagrangeHalfCPolynomial* tmp = new_LagrangeHalfCPolynomial_array(3,N);
+    IntPolynomiallvl2_ifft(tmp+0,poly1);
+    TorusPolynomiallvl2_ifft(tmp+1,poly2);
+    LagrangeHalfCPolynomialMul(tmp+2,tmp+0,tmp+1);
+    TorusPolynomiallvl2_fft(result, tmp+2);
+    delete_LagrangeHalfCPolynomial_array(3,tmp);
+}
+
 EXPORT void torusPolynomialAddMulRFFT(TorusPolynomial* result, const IntPolynomial* poly1, const TorusPolynomial* poly2) {
     const int32_t N = poly1->N;
     LagrangeHalfCPolynomial* tmp = new_LagrangeHalfCPolynomial_array(3,N);

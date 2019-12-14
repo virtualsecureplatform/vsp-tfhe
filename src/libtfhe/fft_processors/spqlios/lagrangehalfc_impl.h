@@ -36,6 +36,7 @@ public:
 };
 
 extern thread_local FFT_Processor_Spqlios fftp1024;
+extern thread_local FFT_Processor_Spqlios fftp2048;
 
 /**
  * structure that represents a real polynomial P mod X^N+1

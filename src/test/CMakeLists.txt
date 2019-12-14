@@ -34,6 +34,7 @@ set(CPP_ITESTS
         test-decomp-tgsw
         test-lwe
         test-multiplication
+        test-multiplicationlvl2
         test-tlwe
         test-gate-bootstrapping
         test-addition-boot

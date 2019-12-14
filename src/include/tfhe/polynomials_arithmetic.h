@@ -110,6 +110,7 @@ EXPORT void torusPolynomialSubMulRKaratsuba(TorusPolynomial* result, const IntPo
 //#define torusPolynomialSubMulR torusPolynomialSubMulRKaratsuba
 
 #define torusPolynomialMulR torusPolynomialMultFFT
+#define torusPolynomialMulRlvl2 torusPolynomialMultlvl2FFT
 #define torusPolynomialAddMulR torusPolynomialAddMulRFFT
 #define torusPolynomialSubMulR torusPolynomialSubMulRFFT
 
