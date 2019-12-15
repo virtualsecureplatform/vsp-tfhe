@@ -22,6 +22,14 @@ EXPORT void torusPolynomialUniform(TorusPolynomial *result) {
         x[i] = uniformTorus32_distrib(generator);
 }
 
+EXPORT void torusPolynomialUniformlvl2(TorusPolynomiallvl2 *result) {
+    const int32_t N = result->N;
+    Torus64 *x = result->coefsT;
+
+    for (int32_t i = 0; i < N; ++i)
+        x[i] = uniformTorus64_distrib(generator);
+}
+
 // TorusPolynomial = TorusPolynomial
 EXPORT void torusPolynomialCopy(
         TorusPolynomial *result,
@@ -52,6 +60,15 @@ EXPORT void torusPolynomialAddTo(TorusPolynomial *result, const TorusPolynomial 
     const int32_t N = poly2->N;
     Torus32 *r = result->coefsT;
     const Torus32 *b = poly2->coefsT;
+
+    for (int32_t i = 0; i < N; ++i)
+        r[i] += b[i];
+}
+
+EXPORT void torusPolynomiallvl2AddTo(TorusPolynomiallvl2 *result, const TorusPolynomiallvl2 *poly2) {
+    const int32_t N = poly2->N;
+    Torus64 *r = result->coefsT;
+    const Torus64 *b = poly2->coefsT;
 
     for (int32_t i = 0; i < N; ++i)
         r[i] += b[i];

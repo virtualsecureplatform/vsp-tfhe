@@ -48,12 +48,12 @@ namespace {
     /*
      * Parameters and keys (for N=512,1024,2048 and k=1,2)
      */
-    const TGswParams *params512_1 = new_TGswParams(4, 8, new_TLweParams(512, 1, 0., 1.));
-    const TGswParams *params512_2 = new_TGswParams(3, 10, new_TLweParams(512, 2, 0., 1.));
-    const TGswParams *params1024_1 = new_TGswParams(3, 10, new_TLweParams(1024, 1, 0., 1.));
-    const TGswParams *params1024_2 = new_TGswParams(4, 8, new_TLweParams(1024, 2, 0., 1.));
-    const TGswParams *params2048_1 = new_TGswParams(4, 8, new_TLweParams(2048, 1, 0., 1.));
-    const TGswParams *params2048_2 = new_TGswParams(3, 10, new_TLweParams(2048, 2, 0., 1.));
+    const TGswParams *params512_1 = new_TGswParams(4, 8, new_TLweParams(512, 1, 0., 1., 0.));
+    const TGswParams *params512_2 = new_TGswParams(3, 10, new_TLweParams(512, 2, 0., 1., 0.));
+    const TGswParams *params1024_1 = new_TGswParams(3, 10, new_TLweParams(1024, 1, 0., 1., 0.));
+    const TGswParams *params1024_2 = new_TGswParams(4, 8, new_TLweParams(1024, 2, 0., 1., 0.));
+    const TGswParams *params2048_1 = new_TGswParams(4, 8, new_TLweParams(2048, 1, 0., 1., 0.));
+    const TGswParams *params2048_2 = new_TGswParams(3, 10, new_TLweParams(2048, 2, 0., 1., 0.));
     vector<const TGswParams *> all_params = {params512_1, params512_2, params1024_1, params1024_2, params2048_1,
                                              params2048_2};
     vector<const TGswParams *> all_params1024 = {params1024_1, params1024_2};

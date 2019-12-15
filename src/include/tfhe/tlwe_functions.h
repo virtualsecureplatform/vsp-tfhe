@@ -33,7 +33,7 @@ EXPORT void tLweSubMulTo(TLweSample *result, int32_t p, const TLweSample *sample
 
 /*create an homogeneous tlwe sample*/
 EXPORT void tLweSymEncryptZero(TLweSample *result, double alpha, const TLweKey *key);
-
+EXPORT void tLweSymEncryptZerolvl2(TLweSamplelvl2 *result, double alpha, const TLweKey *key);
 
 /** result = result + p.sample */
 EXPORT void

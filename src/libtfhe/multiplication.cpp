@@ -30,6 +30,15 @@ TorusPolynomial::~TorusPolynomial() {
     delete[] coefsT;
 }
 
+TorusPolynomiallvl2::TorusPolynomiallvl2(const int32_t N): N(N)
+{
+    this->coefsT = new Torus64[N]; 
+}
+
+TorusPolynomiallvl2::~TorusPolynomiallvl2() {
+    delete[] coefsT;
+}
+
 
 void torusPolynomialMultNaive_plain_aux(Torus32* __restrict result, const int32_t* __restrict poly1, const Torus32* __restrict poly2, const int32_t N) {
     const int32_t _2Nm1 = 2*N-1;
@@ -47,6 +56,21 @@ void torusPolynomialMultNaive_plain_aux(Torus32* __restrict result, const int32_
 	    ri += poly1[j]*poly2[i-j];
 	}
 	result[i]=ri;
+    }
+}
+
+void torus64PolynomialMultNaive_plain_aux(Torus64* __restrict result, const int* __restrict poly1, const Torus64* __restrict poly2, const int N) {
+    const int _2Nm1 = 2*N-1;
+    Torus64 ri;
+    for (int i=0; i<N; i++) {
+        ri=0;
+        for (int j=0; j<=i; j++) ri += poly1[j]*poly2[i-j];
+        result[i]=ri;
+    }
+    for (int i=N; i<_2Nm1; i++) {
+        ri=0;
+        for (int j=i-N+1; j<N; j++) ri += poly1[j]*poly2[i-j];
+        result[i]=ri;
     }
 }
 
@@ -75,7 +99,6 @@ EXPORT void torusPolynomialMultNaive(TorusPolynomial* result, const IntPolynomia
     assert(poly2->N==N && result->N==N);
     torusPolynomialMultNaive_aux(result->coefsT, poly1->coefs, poly2->coefsT, N);
 }
-
 
 
 /**
@@ -122,6 +145,37 @@ EXPORT void Karatsuba_aux(Torus32* R, const int32_t* A, const Torus32* B, const 
 
 }
 
+// A and B of size = size
+// R of size = 2*size-1
+void Karatsuba64_aux(Torus64* R, const int* A, const Torus64* B, const int size, const char* buf){
+    const int h = size / 2;
+    const int sm1 = size-1;
+
+    //we stop the karatsuba recursion at h=4, because on my machine,
+    //it seems to be optimal
+    if (h<=4) {
+        torus64PolynomialMultNaive_plain_aux(R, A, B, size);
+        return;
+    }
+
+    //we split the polynomials in 2
+    int* Atemp = (int*) buf; buf += h*sizeof(int);
+    Torus64* Btemp = (Torus64*) buf; buf+= h*sizeof(Torus64);
+    Torus64* Rtemp = (Torus64*) buf; buf+= size*sizeof(Torus64); 
+    //Note: in the above line, I have put size instead of sm1 so that buf remains aligned on a power of 2
+
+    for (int i = 0; i < h; ++i) Atemp[i] = A[i] + A[h+i];
+    for (int i = 0; i < h; ++i) Btemp[i] = B[i] + B[h+i];
+
+    // Karatsuba recursivly
+    Karatsuba64_aux(R, A, B, h, buf); // (R[0],R[2*h-2]), (A[0],A[h-1]), (B[0],B[h-1])
+    Karatsuba64_aux(R+size, A+h, B+h, h, buf); // (R[2*h],R[4*h-2]), (A[h],A[2*h-1]), (B[h],B[2*h-1])
+    Karatsuba64_aux(Rtemp, Atemp, Btemp, h, buf);
+    R[sm1]=0; //this one needs to be set manually
+    for (int i = 0; i < sm1; ++i) Rtemp[i] -= R[i] + R[size+i];
+    for (int i = 0; i < sm1; ++i) R[h+i] += Rtemp[i];
+}
+
 // poly1, poly2 and result are polynomials mod X^N+1
 EXPORT void torusPolynomialMultKaratsuba(TorusPolynomial* result, const IntPolynomial* poly1, const TorusPolynomial* poly2){
 	const int32_t N = poly1->N;
@@ -140,6 +194,23 @@ EXPORT void torusPolynomialMultKaratsuba(TorusPolynomial* result, const IntPolyn
 	delete[] buf;
 }
 
+EXPORT void torusPolynomiallvl2MultKaratsuba(TorusPolynomiallvl2* result, const IntPolynomial* poly1, const TorusPolynomiallvl2* poly2){
+	const int32_t N = poly1->N;
+	Torus64* R = new Torus64[2*N-1];
+	char* buf = new char[32*N]; //that's large enough to store every tmp variables (2*2*N*8)
+	
+	// Karatsuba 
+	Karatsuba64_aux(R, poly1->coefs, poly2->coefsT, N, buf);
+
+	// reduction mod X^N+1
+	for (int32_t i = 0; i < N-1; ++i) 
+	    result->coefsT[i] = R[i] - R[N+i];
+	result->coefsT[N-1] = R[N-1];
+	
+	delete[] R;
+	delete[] buf;
+}
+
 // poly1, poly2 and result are polynomials mod X^N+1
 EXPORT void torusPolynomialAddMulRKaratsuba(TorusPolynomial* result, const IntPolynomial* poly1, const TorusPolynomial* poly2){
 	const int32_t N = poly1->N;
@@ -148,6 +219,23 @@ EXPORT void torusPolynomialAddMulRKaratsuba(TorusPolynomial* result, const IntPo
 	
 	// Karatsuba 
 	Karatsuba_aux(R, poly1->coefs, poly2->coefsT, N, buf);
+
+	// reduction mod X^N+1
+	for (int32_t i = 0; i < N-1; ++i) 
+	    result->coefsT[i] += R[i] - R[N+i];
+	result->coefsT[N-1] += R[N-1];
+	
+	delete[] R;
+	delete[] buf;
+}
+
+EXPORT void torusPolynomiallvl2AddMulRKaratsuba(TorusPolynomiallvl2* result, const IntPolynomial* poly1, const TorusPolynomiallvl2* poly2){
+	const int32_t N = poly1->N;
+	Torus64* R = new Torus64[2*N-1];
+	char* buf = new char[32*N]; //that's large enough to store every tmp variables (2*2*N*8)
+	
+	// Karatsuba 
+	Karatsuba64_aux(R, poly1->coefs, poly2->coefsT, N, buf);
 
 	// reduction mod X^N+1
 	for (int32_t i = 0; i < N-1; ++i) 

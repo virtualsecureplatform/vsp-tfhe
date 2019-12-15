@@ -27,32 +27,64 @@ struct LweKeySwitchKey {
 #endif
 };
 
+struct TLwePrivKeySwitchKey {
+    int32_t n; ///< length of the input key: s'
+    int32_t t; ///< decomposition length
+    int32_t basebit; ///< log_2(base)
+    int32_t base; ///< decomposition base: a power of 2 
+    const LweParams* out_params; ///< params of the output key s 
+    TLweSample* ks0_raw; //tableau qui contient tout les Lwe samples de taille nlbase
+    TLweSample** ks1_raw;// de taille nl  pointe vers un tableau ks0_raw dont les cases sont espaceés de base positions
+    TLweSample*** ks_k;
+    TLweSample**** ks; ///< the keyswitch elements: a n.l.base matrix
+    // de taille n pointe vers ks1 un tableau dont les cases sont espaceés de ell positions
+
+#ifdef __cplusplus
+    TLwePrivKeySwitchKey(int32_t n, int32_t t, int32_t basebit, const LweParams* out_params, LweSample* ks0_raw);
+    ~TLwePrivKeySwitchKey();
+    TLwePrivKeySwitchKey(const TLwePrivKeySwitchKey&) = delete;
+    void operator=(const TLwePrivKeySwitchKey&) = delete;
+#endif
+};
+
 //allocate memory space for a LweKeySwitchKey
 EXPORT LweKeySwitchKey* alloc_LweKeySwitchKey();
 EXPORT LweKeySwitchKey* alloc_LweKeySwitchKey_array(int32_t nbelts);
+EXPORT TLwePrivKeySwitchKey* alloc_TLwePrivKeySwitchKey();
+EXPORT TLwePrivKeySwitchKey* alloc_TLwePrivKeySwitchKey_array(int32_t nbelts);
 
 //free memory space for a LweKeySwitchKey
 EXPORT void free_LweKeySwitchKey(LweKeySwitchKey* ptr);
 EXPORT void free_LweKeySwitchKey_array(int32_t nbelts, LweKeySwitchKey* ptr);
+EXPORT void free_TLwePrivKeySwitchKey(TLwePrivKeySwitchKey* ptr);
+EXPORT void free_TLwePrivKeySwitchKey_array(int32_t nbelts, TLwePrivKeySwitchKey* ptr);
 
 //initialize the LweKeySwitchKey structure
 //(equivalent of the C++ constructor)
 EXPORT void init_LweKeySwitchKey(LweKeySwitchKey* obj, int32_t n, int32_t t, int32_t basebit, const LweParams* out_params);
 EXPORT void init_LweKeySwitchKey_array(int32_t nbelts, LweKeySwitchKey* obj, int32_t n, int32_t t, int32_t basebit, const LweParams* out_params);
+EXPORT void init_TLwePrivKeySwitchKey(TLwePrivKeySwitchKey* obj, int32_t n, int32_t t, int32_t basebit, const LweParams* out_params);
+EXPORT void init_TLwePrivKeySwitchKey_array(int32_t nbelts, TLwePrivKeySwitchKey* obj, int32_t n, int32_t t, int32_t basebit, const LweParams* out_params);
 
 //destroys the LweKeySwitchKey structure
 //(equivalent of the C++ destructor)
 EXPORT void destroy_LweKeySwitchKey(LweKeySwitchKey* obj);
 EXPORT void destroy_LweKeySwitchKey_array(int32_t nbelts, LweKeySwitchKey* obj);
+EXPORT void destroy_TLwePrivKeySwitchKey(LweKeySwitchKey* obj);
+EXPORT void destroy_TLwePrivKeySwitchKey_array(int32_t nbelts, LweKeySwitchKey* obj);
 
 //allocates and initialize the LweKeySwitchKey structure
 //(equivalent of the C++ new)
 EXPORT LweKeySwitchKey* new_LweKeySwitchKey(int32_t n, int32_t t, int32_t basebit, const LweParams* out_params);
 EXPORT LweKeySwitchKey* new_LweKeySwitchKey_array(int32_t nbelts, int32_t n, int32_t t, int32_t basebit, const LweParams* out_params);
+EXPORT LweKeySwitchKey* new_TLwePrivKeySwitchKey(int32_t n, int32_t t, int32_t basebit, const LweParams* out_params);
+EXPORT LweKeySwitchKey* new_TLwePrivKeySwitchKey_array(int32_t nbelts, int32_t n, int32_t t, int32_t basebit, const LweParams* out_params);
 
 //destroys and frees the LweKeySwitchKey structure
 //(equivalent of the C++ delete)
 EXPORT void delete_LweKeySwitchKey(LweKeySwitchKey* obj);
 EXPORT void delete_LweKeySwitchKey_array(int32_t nbelts, LweKeySwitchKey* obj);
+EXPORT void delete_TLwePrivKeySwitchKey(LweKeySwitchKey* obj);
+EXPORT void delete_TLwePrivKeySwitchKey_array(int32_t nbelts, LweKeySwitchKey* obj);
 
 #endif // LWEKEYSWITCH_H

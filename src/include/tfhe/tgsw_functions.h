@@ -13,6 +13,7 @@
 EXPORT void tGswKeyGen(TGswKey *result);
 EXPORT void tGswSymEncrypt(TGswSample *result, const IntPolynomial *message, double alpha, const TGswKey *key);
 EXPORT void tGswSymEncryptInt(TGswSample *result, const int32_t message, double alpha, const TGswKey *key);
+EXPORT void tGswSymEncryptIntlvl2(TGswSamplelvl2 *result, const int64_t message, double alpha, const TGswKey *key);
 EXPORT void tGswSymDecrypt(IntPolynomial *result, const TGswSample *sample, const TGswKey *key, const int32_t Msize);
 EXPORT int32_t tGswSymDecryptInt(const TGswSample *sample, const TGswKey *key);
 //do we really decrypt Gsw samples?

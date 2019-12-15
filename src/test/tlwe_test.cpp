@@ -32,12 +32,12 @@ namespace {
      * Parameters and keys (for N=512,1024,2048 and k=1,2)
      * ILA: Creer un set des parametres avec tous les params à l'interieur et utiliser le set dans les tests (?)
      */
-    const TLweParams *params512_1 = new_TLweParams(512, 1, 0., 1.);
-    const TLweParams *params512_2 = new_TLweParams(512, 2, 0., 1.);
-    const TLweParams *params1024_1 = new_TLweParams(1024, 1, 0., 1.);
-    const TLweParams *params1024_2 = new_TLweParams(1024, 2, 0., 1.);
-    const TLweParams *params2048_1 = new_TLweParams(2048, 1, 0., 1.);
-    const TLweParams *params2048_2 = new_TLweParams(2048, 2, 0., 1.);
+    const TLweParams *params512_1 = new_TLweParams(512, 1, 0., 1., 0.);
+    const TLweParams *params512_2 = new_TLweParams(512, 2, 0., 1., 0.);
+    const TLweParams *params1024_1 = new_TLweParams(1024, 1, 0., 1., 0.);
+    const TLweParams *params1024_2 = new_TLweParams(1024, 2, 0., 1., 0.);
+    const TLweParams *params2048_1 = new_TLweParams(2048, 1, 0., 1., 0.);
+    const TLweParams *params2048_2 = new_TLweParams(2048, 2, 0., 1., 0.);
     vector<const TLweParams *> all_params = {params512_1, params512_2, params1024_1, params1024_2, params2048_1,
                                              params2048_2};
 

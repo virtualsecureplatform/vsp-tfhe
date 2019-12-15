@@ -29,9 +29,9 @@ namespace {
         static const vector<const LweKey *> all_keys;
     };
 
-    const LweParams *LweTest::params500 = new_LweParams(500, 0., 1.);
-    const LweParams *LweTest::params750 = new_LweParams(750, 0., 1.);
-    const LweParams *LweTest::params1024 = new_LweParams(1024, 0., 1.);
+    const LweParams *LweTest::params500 = new_LweParams(500, 0., 1., 0.);
+    const LweParams *LweTest::params750 = new_LweParams(750, 0., 1., 0.);
+    const LweParams *LweTest::params1024 = new_LweParams(1024, 0., 1., 0.);
     const LweKey *LweTest::key500 = new_random_LweKey(params500);
     const LweKey *LweTest::key750 = new_random_LweKey(params750);
     const LweKey *LweTest::key1024 = new_random_LweKey(params1024);

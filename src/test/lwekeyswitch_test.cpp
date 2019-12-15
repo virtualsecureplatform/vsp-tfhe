@@ -3,6 +3,10 @@
 #include "lwekeyswitch.h"
 #include "numeric_functions.h"
 
+#include "tlwe.h"
+#include "polynomials.h"
+#include "tlwe_functions.h"
+
 using namespace std;
 
 using namespace ::testing;
@@ -10,8 +14,8 @@ using namespace ::testing;
 namespace {
 
     //const LweParams* params250_0 = new_LweParams(250,0.,1.);
-    const LweParams *params500_0 = new_LweParams(500, 0., 1.);
-    const LweParams *params500_1em5 = new_LweParams(500, 1e-5, 1.);
+    const LweParams *params500_0 = new_LweParams(500, 0., 1., 0.);
+    const LweParams *params500_1em5 = new_LweParams(500, 1e-5, 1., 0.);
     //const LweKey* key250 = new_LweKey(params250_0);
     const LweKey *key500 = new_LweKey(params500_0);
 

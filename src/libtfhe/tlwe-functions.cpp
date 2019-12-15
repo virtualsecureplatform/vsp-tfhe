@@ -37,6 +37,20 @@ EXPORT void tLweSymEncryptZero(TLweSample *result, double alpha, const TLweKey *
 
     result->current_variance = alpha * alpha;
 }
+EXPORT void tLweSymEncryptZerolvl2(TLweSamplelvl2 *result, double alpha, const TLweKey *key) {
+    const int32_t N = key->params->N;
+    const int32_t k = key->params->k;
+
+    for (int32_t j = 0; j < N; ++j)
+        result->b->coefsT[j] = gaussian64(0, alpha);
+
+    for (int32_t i = 0; i < k; ++i) {
+        torusPolynomialUniformlvl2(&result->a[i]);
+        torusPolynomiallvl2AddMulR(result->b, &key->key[i], &result->a[i]);
+    }
+
+    result->current_variance = alpha * alpha;
+}
 
 EXPORT void tLweSymEncrypt(TLweSample *result, TorusPolynomial *message, double alpha, const TLweKey *key) {
     const int32_t N = key->params->N;

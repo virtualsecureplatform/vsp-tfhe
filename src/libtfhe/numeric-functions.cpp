@@ -10,6 +10,7 @@ using namespace std;
 
 default_random_engine generator;
 uniform_int_distribution<Torus32> uniformTorus32_distrib(INT32_MIN, INT32_MAX);
+uniform_int_distribution<Torus64> uniformTorus64_distrib(INT64_MIN, INT64_MAX);
 uniform_int_distribution<int32_t> uniformInt_distrib(INT_MIN, INT_MAX);
 
 /** sets the seed of the random number generator to the given values */
@@ -25,12 +26,22 @@ EXPORT Torus32 gaussian32(Torus32 message, double sigma){
     double err = distribution(generator);
     return message + dtot32(err);
 }
+EXPORT Torus64 gaussian64(Torus64 message, double sigma){
+    //Attention: all the implementation will use the stdev instead of the gaussian fourier param
+    normal_distribution<double> distribution(0.,sigma); //TODO: can we create a global distrib of param 1 and multiply by sigma?
+    double err = distribution(generator);
+    return message + dtot64(err);
+}
 
 
 
 // from double to Torus32
 EXPORT Torus32 dtot32(double d) {
     return int32_t(int64_t((d - int64_t(d))*_two32));
+}
+// from double to Torus64
+EXPORT Torus64 dtot64(double d) {
+    return int64_t(int64_t((d - int64_t(d))*_two64_double));
 }
 // from Torus32 to double
 EXPORT double t32tod(Torus32 x) {

@@ -39,8 +39,8 @@ int32_t main(int32_t argc, char **argv) {
     const double alpha_bk = 9e-9;
     //const int32_t alpha_ks = 1e-6;
 
-    LweParams *params_in = new_LweParams(n, alpha_in, 1. / 16.);
-    TLweParams *params_accum = new_TLweParams(N, k, alpha_bk, 1. / 16.);
+    LweParams *params_in = new_LweParams(n, alpha_in, 1. / 16., 0.);
+    TLweParams *params_accum = new_TLweParams(N, k, alpha_bk, 1. / 16., 0.);
     TGswParams *params_bk = new_TGswParams(l_bk, Bgbit_bk, params_accum);
 
     LweKey *key = new_LweKey(params_in);

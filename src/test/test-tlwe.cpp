@@ -24,13 +24,14 @@ int32_t main(int32_t argc, char **argv) {
     const int32_t k = 2;
     const double alpha_min = 0.01;
     const double alpha_max = 0.071;
+    const double alpha_lvl21 = 0.001;
     const int32_t Msize = 7; // taille de l'espace des coeffs du polynome du message
     const double alpha = 0.02;
     //TODO: parallelization
     static uniform_int_distribution<int32_t> distribution(0, Msize - 1);
 
     // PARAMETERS
-    TLweParams *params = new_TLweParams(N, k, alpha_min, alpha_max); //les deux alpha mis un peu au hasard
+    TLweParams *params = new_TLweParams(N, k, alpha_min, alpha_max, alpha_lvl21); //les deux alpha mis un peu au hasard
     // KEY
     TLweKey *key = new_TLweKey(params);
     // CIPHERTEXTS

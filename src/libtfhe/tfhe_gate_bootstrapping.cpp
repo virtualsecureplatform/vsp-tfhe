@@ -34,15 +34,27 @@ EXPORT TFheGateBootstrappingParameterSet *new_default_gate_bootstrapping_paramet
     static const double bk_stdev = 7.18e-9; //standard deviation
     static const double max_stdev = 0.012467; //max standard deviation for a 1/4 msg space
 
-    LweParams *params_in = new_LweParams(n, ks_stdev, max_stdev);
-    TLweParams *params_accum = new_TLweParams(N, k, bk_stdev, max_stdev);
+    static const int32_t nbar = 2048;
+    static const int32_t bk_lbar = 4;
+    static const int32_t bk_Bgbitbar = 9;
+    static const int32_t ks_basebitlvl21 = 3;
+    static const int32_t ks_lengthlvl21 = 10;
+    static const double ks_stdevlvl21 = pow(2,-31); //standard deviation
+    static const double bk_stdevlvl21 = pow(2,-44); //standard deviation
+
+    LweParams *params_in = new_LweParams(n, ks_stdev, max_stdev, ks_stdevlvl21);
+    TLweParams *params_accum = new_TLweParams(N, k, bk_stdev, max_stdev, ks_stdevlvl21);
+    TLweParams *params_accumlvl02 = new_TLweParams(nbar, k, bk_stdevlvl21, max_stdev, ks_stdevlvl21);
     TGswParams *params_bk = new_TGswParams(bk_l, bk_Bgbit, params_accum);
+    TGswParams *params_bklvl02 = new_TGswParams(bk_lbar, bk_Bgbitbar, params_accumlvl02);
 
     TfheGarbageCollector::register_param(params_in);
     TfheGarbageCollector::register_param(params_accum);
+    TfheGarbageCollector::register_param(params_accumlvl02);
     TfheGarbageCollector::register_param(params_bk);
+    TfheGarbageCollector::register_param(params_bklvl02);
 
-    return new TFheGateBootstrappingParameterSet(ks_length, ks_basebit, params_in, params_bk);
+    return new TFheGateBootstrappingParameterSet(ks_length, ks_basebit, params_in, params_bk, ks_lengthlvl21, ks_basebitlvl21, params_bklvl02);
 }
 
 /** deletes gate bootstrapping parameters */
@@ -57,9 +69,14 @@ new_random_gate_bootstrapping_secret_keyset(const TFheGateBootstrappingParameter
     lweKeyGen(lwe_key);
     TGswKey *tgsw_key = new_TGswKey(params->tgsw_params);
     tGswKeyGen(tgsw_key);
+    TGswKey *tgsw_keylvl2 = new_TGswKey(params->tgsw_paramslvl2);
+    tGswKeyGen(tgsw_keylvl2);
     LweBootstrappingKey *bk = new_LweBootstrappingKey(params->ks_t, params->ks_basebit, params->in_out_params,
                                                       params->tgsw_params);
+    LweBootstrappingKey *bklvl02 = new_LweBootstrappingKey(params->ks_tbar, params->ks_basebitlvl21, params->in_out_params,
+                                                      params->tgsw_paramslvl2);
     tfhe_createLweBootstrappingKey(bk, lwe_key, tgsw_key);
+    tfhe_createLweBootstrappingKey(bklvl02, lwe_key, tgsw_keylvl2);
     LweBootstrappingKeyFFT *bkFFT = new_LweBootstrappingKeyFFT(bk);
     return new TFheGateBootstrappingSecretKeySet(params, bk, bkFFT, lwe_key, tgsw_key);
 }

@@ -1,8 +1,11 @@
 #ifndef TFHE_TEST_ENVIRONMENT
 #include <iostream>
 #include "lwe-functions.h"
+#include "tlwe_functions.h"
 #include "lwekeyswitch.h"
 #include "numeric_functions.h"
+#include "tfhe_core.h"
+#include "polynomials.h"
 #include <random>
 
 
@@ -212,6 +215,35 @@ EXPORT void lweCreateKeySwitchKey(LweKeySwitchKey* result, const LweKey* in_key,
 
 
     delete[] noise; 
+}
+
+/*
+Create the private key switching key: normalize the error in the beginning
+ * chose a random vector of gaussian noises (same size as ks) 
+ * recenter the noises 
+ * generate the ks by creating noiseless encryprions and then add the noise
+*/
+EXPORT void tlweCreatePrivKeySwitchKey(TLwePrivKeySwitchKey* result, const TLweKey* lvl2key, const TLweKey* lvl1key, const LweKey* lvl0key){
+    const int32_t n = result->n;
+    const int32_t t = result->t;
+    const int32_t basebit = result->basebit;
+    const int32_t base = 1<<basebit;
+    const double alpha = lvl0key->params->alpha_lvl21;
+    const int32_t k = lvl2key->params->k;
+    //const int32_t n_out = out_key->params->n;
+
+    // generate the private key switching key.
+    for(int32_t z = 0; z< k+1; ++z){
+        for (int32_t i = 0; i <= n; ++i) {
+            for (int32_t j = 0; j < t; ++j) {
+                for (int32_t u = 1; u < base; ++u) { // pas le terme en 0
+                    Torus32 mess = (lvl2key->key->coefs[i] * u)*(1<<(32-(j+1)*basebit));
+                    tLweSymEncryptZero(&result->ks[z][i][j][u], alpha, lvl1key);
+                    result->ks[z][i][j][u].a[z].coefsT[0] += mess;
+                }
+            }
+        }
+    }   
 }
 
 

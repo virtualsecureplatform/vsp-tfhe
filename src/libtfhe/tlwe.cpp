@@ -9,12 +9,12 @@
 //    const double alpha_max;
 //};
 
-TLweParams::TLweParams(int32_t N, int32_t k, double alpha_min, double alpha_max) :
+TLweParams::TLweParams(int32_t N, int32_t k, double alpha_min, double alpha_max, double alpha_lvl21) :
         N(N),
         k(k),
         alpha_min(alpha_min),
         alpha_max(alpha_max),
-        extracted_lweparams(N * k, alpha_min, alpha_max) {}
+        extracted_lweparams(N * k, alpha_min, alpha_max, alpha_lvl21) {}
 
 TLweParams::~TLweParams() {}
 

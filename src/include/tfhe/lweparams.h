@@ -14,13 +14,14 @@ struct LweParams {
 	const int32_t n;
 	const double alpha_min;//le plus petit bruit tq sur
 	const double alpha_max;//le plus gd bruit qui permet le déchiffrement
+	const double alpha_lvl21;//standard derivation of private key switching key.
 
 
 
 //since all members are declared constant, a constructor is 
 //required in the structure.
 #ifdef __cplusplus
-	LweParams(int32_t n, double alpha_min, double alpha_max);
+	LweParams(int32_t n, double alpha_min, double alpha_max, double alpha_lvl21);
 	~LweParams();
 	LweParams(const LweParams&) = delete; //forbidden
 	LweParams& operator=(const LweParams& ) = delete; //forbidden
@@ -37,8 +38,8 @@ EXPORT void free_LweParams_array(int32_t nbelts, LweParams* ptr);
 
 //initialize the LweParams structure
 //(equivalent of the C++ constructor)
-EXPORT void init_LweParams(LweParams* obj, int32_t n, double alpha_min, double alpha_max);
-EXPORT void init_LweParams_array(int32_t nbelts, LweParams* obj, int32_t n, double alpha_min, double alpha_max);
+EXPORT void init_LweParams(LweParams* obj, int32_t n, double alpha_min, double alpha_max, double alpha_lvl21);
+EXPORT void init_LweParams_array(int32_t nbelts, LweParams* obj, int32_t n, double alpha_min, double alpha_max, double alpha_lvl21);
 
 //destroys the LweParams structure
 //(equivalent of the C++ destructor)
@@ -47,8 +48,8 @@ EXPORT void destroy_LweParams_array(int32_t nbelts, LweParams* obj);
  
 //allocates and initialize the LweParams structure
 //(equivalent of the C++ new)
-EXPORT LweParams* new_LweParams(int32_t n, double alpha_min, double alpha_max);
-EXPORT LweParams* new_LweParams_array(int32_t nbelts, int32_t n, double alpha_min, double alpha_max);
+EXPORT LweParams* new_LweParams(int32_t n, double alpha_min, double alpha_max, double alpha_lvl21);
+EXPORT LweParams* new_LweParams_array(int32_t nbelts, int32_t n, double alpha_min, double alpha_max, double alpha_lvl21);
 
 //destroys and frees the LweParams structure
 //(equivalent of the C++ delete)

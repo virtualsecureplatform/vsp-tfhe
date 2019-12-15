@@ -72,6 +72,7 @@ EXPORT void lweSubMulTo(LweSample* result, int32_t p, const LweSample* sample, c
  */
 EXPORT void lweCreateKeySwitchKey_old(LweKeySwitchKey* result, const LweKey* in_key, const LweKey* out_key);
 EXPORT void lweCreateKeySwitchKey(LweKeySwitchKey* result, const LweKey* in_key, const LweKey* out_key);
+EXPORT void tlweCreatePrivKeySwitchKey(TLwePrivKeySwitchKey* result, const TLweKey* lvl2key, const TLweKey* lvl1key, const LweKey* lvl0key);
 
 /**
  * applies keySwitching

@@ -121,6 +121,16 @@ EXPORT void tGswAddMuIntH(TGswSample *result, const int32_t message, const TGswP
         for (int32_t i = 0; i < l; i++)
             result->bloc_sample[bloc][i].a[bloc].coefsT[0] += message * h[i];
 }
+EXPORT void tGswAddMuIntHlvl2(TGswSamplelvl2 *result, const int32_t message, const TGswParams *params) {
+    const int32_t k = params->tlwe_params->k;
+    const int32_t l = params->l;
+    const Torus32 *h = params->h;
+
+    // compute result += H
+    for (int32_t bloc = 0; bloc <= k; ++bloc)
+        for (int32_t i = 0; i < l; i++)
+            result->bloc_sample[bloc][i].a[bloc].coefsT[0] += message * h[i];
+}
 #endif
 
 #if defined INCLUDE_ALL || defined INCLUDE_TGSW_ENCRYPT_ZERO
@@ -132,6 +142,14 @@ EXPORT void tGswEncryptZero(TGswSample *result, double alpha, const TGswKey *key
 
     for (int32_t p = 0; p < kpl; ++p) {
         tLweSymEncryptZero(&result->all_sample[p], alpha, rlkey);
+    }
+}
+EXPORT void tGswEncryptZerolvl2(TGswSamplelvl2 *result, double alpha, const TGswKey *key) {
+    const TLweKey *rlkey = &key->tlwe_key;
+    const int32_t kpl = key->params->kpl;
+
+    for (int32_t p = 0; p < kpl; ++p) {
+        tLweSymEncryptZerolvl2(&result->all_sample[p], alpha, rlkey);
     }
 }
 #endif
@@ -191,6 +209,10 @@ EXPORT void tGswSymEncrypt(TGswSample *result, const IntPolynomial *message, dou
 EXPORT void tGswSymEncryptInt(TGswSample *result, const int32_t message, double alpha, const TGswKey *key) {
     tGswEncryptZero(result, alpha, key);
     tGswAddMuIntH(result, message, key->params);
+}
+EXPORT void tGswSymEncryptIntlvl2(TGswSamplelvl2 *result, const int64_t message, double alpha, const TGswKey *key) {
+    tGswEncryptZerolvl2(result, alpha, key);
+    tGswAddMuIntHlvl2(result, message, key->params);
 }
 #endif
 

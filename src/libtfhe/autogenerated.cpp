@@ -66,11 +66,6 @@ EXPORT void delete_IntPolynomial_array(int32_t nbelts, IntPolynomial* obj) {
 }
 
 #include "lwebootstrappingkey.h" 
-
-
-
-
-
 #include "lweparams.h" 
 //allocate memory space for a LweParams
 
@@ -91,12 +86,12 @@ EXPORT void free_LweParams_array(int32_t nbelts, LweParams* ptr) {
 
 //initialize the key structure
 //(equivalent of the C++ constructor)
-EXPORT void init_LweParams(LweParams* obj, int32_t n, double alpha_min, double alpha_max) {
-    new(obj) LweParams(n,alpha_min,alpha_max);
+EXPORT void init_LweParams(LweParams* obj, int32_t n, double alpha_min, double alpha_max, double alpha_lvl21) {
+    new(obj) LweParams(n,alpha_min,alpha_max,alpha_lvl21);
 }
-EXPORT void init_LweParams_array(int32_t nbelts, LweParams* obj, int32_t n, double alpha_min, double alpha_max) {
+EXPORT void init_LweParams_array(int32_t nbelts, LweParams* obj, int32_t n, double alpha_min, double alpha_max, double alpha_lvl21) {
     for (int32_t i=0; i<nbelts; i++) {
-	new(obj+i) LweParams(n,alpha_min,alpha_max);
+	new(obj+i) LweParams(n,alpha_min,alpha_max,alpha_lvl21);
     }
 }
 
@@ -113,12 +108,12 @@ EXPORT void destroy_LweParams_array(int32_t nbelts, LweParams* obj) {
  
 //allocates and initialize the LweParams structure
 //(equivalent of the C++ new)
-EXPORT LweParams* new_LweParams(int32_t n, double alpha_min, double alpha_max) {
-    return new LweParams(n,alpha_min,alpha_max);
+EXPORT LweParams* new_LweParams(int32_t n, double alpha_min, double alpha_max, double alpha_lvl21) {
+    return new LweParams(n,alpha_min,alpha_max, alpha_lvl21);
 }
-EXPORT LweParams* new_LweParams_array(int32_t nbelts, int32_t n, double alpha_min, double alpha_max) {
+EXPORT LweParams* new_LweParams_array(int32_t nbelts, int32_t n, double alpha_min, double alpha_max, double alpha_lvl21) {
     LweParams* obj = alloc_LweParams_array(nbelts);
-    init_LweParams_array(nbelts,obj,n,alpha_min,alpha_max);
+    init_LweParams_array(nbelts,obj,n,alpha_min,alpha_max, alpha_lvl21);
     return obj;
 }
 
@@ -273,12 +268,12 @@ EXPORT void free_TLweParams_array(int32_t nbelts, TLweParams* ptr) {
 
 //initialize the key structure
 //(equivalent of the C++ constructor)
-EXPORT void init_TLweParams(TLweParams* obj, int32_t N, int32_t k, double alpha_min, double alpha_max) {
-    new(obj) TLweParams(N,k,alpha_min,alpha_max);
+EXPORT void init_TLweParams(TLweParams* obj, int32_t N, int32_t k, double alpha_min, double alpha_max, double alpha_lvl21) {
+    new(obj) TLweParams(N,k,alpha_min,alpha_max,alpha_lvl21);
 }
-EXPORT void init_TLweParams_array(int32_t nbelts, TLweParams* obj, int32_t N, int32_t k, double alpha_min, double alpha_max) {
+EXPORT void init_TLweParams_array(int32_t nbelts, TLweParams* obj, int32_t N, int32_t k, double alpha_min, double alpha_max, double alpha_lvl21) {
     for (int32_t i=0; i<nbelts; i++) {
-	new(obj+i) TLweParams(N,k,alpha_min,alpha_max);
+	new(obj+i) TLweParams(N,k,alpha_min,alpha_max, alpha_lvl21);
     }
 }
 
@@ -295,12 +290,12 @@ EXPORT void destroy_TLweParams_array(int32_t nbelts, TLweParams* obj) {
  
 //allocates and initialize the TLweParams structure
 //(equivalent of the C++ new)
-EXPORT TLweParams* new_TLweParams(int32_t N, int32_t k, double alpha_min, double alpha_max) {
-    return new TLweParams(N,k,alpha_min,alpha_max);
+EXPORT TLweParams* new_TLweParams(int32_t N, int32_t k, double alpha_min, double alpha_max, double alpha_lvl21) {
+    return new TLweParams(N,k,alpha_min,alpha_max,alpha_lvl21);
 }
-EXPORT TLweParams* new_TLweParams_array(int32_t nbelts, int32_t N, int32_t k, double alpha_min, double alpha_max) {
+EXPORT TLweParams* new_TLweParams_array(int32_t nbelts, int32_t N, int32_t k, double alpha_min, double alpha_max, double alpha_lvl21) {
     TLweParams* obj = alloc_TLweParams_array(nbelts);
-    init_TLweParams_array(nbelts,obj,N,k,alpha_min,alpha_max);
+    init_TLweParams_array(nbelts,obj,N,k,alpha_min,alpha_max,alpha_lvl21);
     return obj;
 }
 
@@ -358,6 +353,10 @@ EXPORT void destroy_TorusPolynomial_array(int32_t nbelts, TorusPolynomial* obj) 
 EXPORT TorusPolynomial* new_TorusPolynomial(const int32_t N) {
     return new TorusPolynomial(N);
 }
+EXPORT TorusPolynomiallvl2* new_TorusPolynomiallvl2(const int32_t N) {
+    return new TorusPolynomiallvl2(N);
+}
+
 EXPORT TorusPolynomial* new_TorusPolynomial_array(int32_t nbelts, const int32_t N) {
     TorusPolynomial* obj = alloc_TorusPolynomial_array(nbelts);
     init_TorusPolynomial_array(nbelts,obj,N);
@@ -367,6 +366,9 @@ EXPORT TorusPolynomial* new_TorusPolynomial_array(int32_t nbelts, const int32_t 
 //destroys and frees the TorusPolynomial structure
 //(equivalent of the C++ delete)
 EXPORT void delete_TorusPolynomial(TorusPolynomial* obj) {
+    delete obj;
+}
+EXPORT void delete_TorusPolynomiallvl2(TorusPolynomiallvl2* obj) {
     delete obj;
 }
 EXPORT void delete_TorusPolynomial_array(int32_t nbelts, TorusPolynomial* obj) {

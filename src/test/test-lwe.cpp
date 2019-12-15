@@ -20,7 +20,7 @@ double approxEquals(Torus32 a, Torus32 b) { return abs(a - b) < 10; }
 
 int32_t main(int32_t argc, char **argv) {
 
-    LweParams *params = new_LweParams(512, 0.2, 0.5); //les deux alpha mis un peu au hasard
+    LweParams *params = new_LweParams(512, 0.2, 0.5, 0.); //les deux alpha mis un peu au hasard
     int32_t n = params->n;
     LweKey *key = new_LweKey(params);
     LweSample *cipher = new_LweSample(params);

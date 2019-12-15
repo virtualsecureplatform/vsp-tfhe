@@ -13,6 +13,7 @@ EXPORT void torusPolynomialClear(TorusPolynomial* result);
 
 /**  TorusPolynomial = random */
 EXPORT void torusPolynomialUniform(TorusPolynomial* result);
+EXPORT void torusPolynomialUniformlvl2(TorusPolynomiallvl2* result);
 
 /**  TorusPolynomial = TorusPolynomial */
 EXPORT void torusPolynomialCopy(TorusPolynomial* result, const TorusPolynomial*  sample);
@@ -22,6 +23,7 @@ EXPORT void torusPolynomialAdd(TorusPolynomial* result, const TorusPolynomial* p
 
 /**  TorusPolynomial += TorusPolynomial */
 EXPORT void torusPolynomialAddTo(TorusPolynomial* result, const TorusPolynomial* poly2);
+EXPORT void torusPolynomiallvl2AddTo(TorusPolynomiallvl2* result, const TorusPolynomiallvl2* poly2);
 
 
 /**  TorusPolynomial - TorusPolynomial */
@@ -90,6 +92,7 @@ EXPORT void torusPolynomialMultNaive(TorusPolynomial* result, const IntPolynomia
  * behaviour is unpredictable
  */
 EXPORT void torusPolynomialMultKaratsuba(TorusPolynomial* result, const IntPolynomial* poly1, const TorusPolynomial* poly2);
+EXPORT void torusPolynomiallvl2MultKaratsuba(TorusPolynomiallvl2* result, const IntPolynomial* poly1, const TorusPolynomiallvl2* poly2);
 
 /**
  * result += poly1 * poly2 (via karatsuba)
@@ -104,6 +107,7 @@ EXPORT void torusPolynomialAddMulRKaratsuba(TorusPolynomial* result, const IntPo
  * behaviour is unpredictable
  */
 EXPORT void torusPolynomialSubMulRKaratsuba(TorusPolynomial* result, const IntPolynomial* poly1, const TorusPolynomial* poly2);
+EXPORT void torusPolynomiallvl2AddMulRKaratsuba(TorusPolynomiallvl2* result, const IntPolynomial* poly1, const TorusPolynomiallvl2* poly2);
 
 //#define torusPolynomialMulR torusPolynomialMultKaratsuba
 //#define torusPolynomialAddMulR torusPolynomialAddMulRKaratsuba
@@ -112,6 +116,7 @@ EXPORT void torusPolynomialSubMulRKaratsuba(TorusPolynomial* result, const IntPo
 #define torusPolynomialMulR torusPolynomialMultFFT
 #define torusPolynomialMulRlvl2 torusPolynomialMultlvl2FFT
 #define torusPolynomialAddMulR torusPolynomialAddMulRFFT
+#define torusPolynomiallvl2AddMulR torusPolynomiallvl2AddMulRKaratsuba
 #define torusPolynomialSubMulR torusPolynomialSubMulRFFT
 
 

@@ -22,8 +22,8 @@ namespace {
     const double alpha_bk = 9e-9;
     //const int32_t alpha_ks = 1e-6;
 
-    const LweParams *in_params = new_LweParams(n, alpha_in, 1. / 16.);
-    const TLweParams *accum_params = new_TLweParams(N, k, alpha_bk, 1. / 16.);
+    const LweParams *in_params = new_LweParams(n, alpha_in, 1. / 16., 0.);
+    const TLweParams *accum_params = new_TLweParams(N, k, alpha_bk, 1. / 16., 0.);
     const TGswParams *bk_params = new_TGswParams(l_bk, Bgbit_bk, accum_params);
     const LweParams *extract_params = &accum_params->extracted_lweparams;
 

@@ -16,7 +16,7 @@ struct TLweParams {
 
 #ifdef __cplusplus
 
-    TLweParams(int32_t N, int32_t k, double alpha_min, double alpha_max);
+    TLweParams(int32_t N, int32_t k, double alpha_min, double alpha_max, double alpha_lvl21);
 
     ~TLweParams();
 
@@ -62,6 +62,24 @@ struct TLweSample {
 #endif
 };
 
+struct TLweSamplelvl2 {
+    TorusPolynomiallvl2 *a; ///< array of length k+1: mask + right term
+    TorusPolynomiallvl2 *b; ///< alias of a[k] to get the right term
+    double current_variance; ///< avg variance of the sample
+    const int32_t k;
+#ifdef __cplusplus
+
+    TLweSamplelvl2(const TLweParams *params);
+
+    ~TLweSamplelvl2();
+
+    TLweSamplelvl2(const TLweSamplelvl2 &) = delete;
+
+    void operator=(const TLweSamplelvl2 &) = delete;
+
+#endif
+};
+
 struct TLweSampleFFT {
     LagrangeHalfCPolynomial *a; ///< array of length k+1: mask + right term
     LagrangeHalfCPolynomial *b; ///< alias of a[k] to get the right term
@@ -91,8 +109,8 @@ EXPORT void free_TLweParams_array(int32_t nbelts, TLweParams *ptr);
 
 //initialize the TLweParams structure
 //(equivalent of the C++ constructor)
-EXPORT void init_TLweParams(TLweParams *obj, int32_t N, int32_t k, double alpha_min, double alpha_max);
-EXPORT void init_TLweParams_array(int32_t nbelts, TLweParams *obj, int32_t N, int32_t k, double alpha_min, double alpha_max);
+EXPORT void init_TLweParams(TLweParams *obj, int32_t N, int32_t k, double alpha_min, double alpha_max, double alpha_lvl21);
+EXPORT void init_TLweParams_array(int32_t nbelts, TLweParams *obj, int32_t N, int32_t k, double alpha_min, double alpha_max, double alpha_lvl21);
 
 //destroys the TLweParams structure
 //(equivalent of the C++ destructor)
@@ -101,8 +119,8 @@ EXPORT void destroy_TLweParams_array(int32_t nbelts, TLweParams *obj);
 
 //allocates and initialize the TLweParams structure
 //(equivalent of the C++ new)
-EXPORT TLweParams *new_TLweParams(int32_t N, int32_t k, double alpha_min, double alpha_max);
-EXPORT TLweParams *new_TLweParams_array(int32_t nbelts, int32_t N, int32_t k, double alpha_min, double alpha_max);
+EXPORT TLweParams *new_TLweParams(int32_t N, int32_t k, double alpha_min, double alpha_max, double alpha_lvl21);
+EXPORT TLweParams *new_TLweParams_array(int32_t nbelts, int32_t N, int32_t k, double alpha_min, double alpha_max, double alpha_lvl21);
 
 //destroys and frees the TLweParams structure
 //(equivalent of the C++ delete)

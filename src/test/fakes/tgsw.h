@@ -39,6 +39,39 @@ namespace {
         void operator=(const FakeTGsw &)= delete;
     };
 
+    struct FakeTGswlvl2 {
+        //TODO: parallelization
+        static const int64_t FAKE_TGSW_UID = 123444802642375465l; // precaution: do not confuse fakes with trues
+        const int64_t fake_uid;
+        IntPolynomial *message;
+        double current_variance;
+
+        //this padding is here to make sure that FakeTLwe and TLweSample have the same size
+        char unused_padding[sizeof(TGswSample) - sizeof(int64_t) - sizeof(IntPolynomial *) - sizeof(double)];
+
+        void setMessageVariance(bool mess, double variance) {
+            intPolynomialClear(message);
+            message->coefs[0] = mess;
+            current_variance = variance;
+        }
+
+        // construct
+        FakeTGswlvl2(int32_t N) : fake_uid(FAKE_TGSW_UID) {
+            message = new_IntPolynomial(N);
+            current_variance = 0.;
+        }
+
+        // delete
+        ~FakeTGswlvl2() {
+            if (fake_uid != FAKE_TGSW_UID) abort();
+            delete_IntPolynomial(message);
+        }
+
+        FakeTGswlvl2(const FakeTGswlvl2 &) = delete;
+
+        void operator=(const FakeTGswlvl2 &)= delete;
+    };
+
     // At compile time, we verify that the two structures have exactly the same size
     //TODO: parallelization
     static_assert(sizeof(FakeTGsw) == sizeof(TGswSample), "Error: Size is not correct");
@@ -47,6 +80,12 @@ namespace {
     inline FakeTGsw *fake(TGswSample *sample) {
         FakeTGsw *reps = (FakeTGsw *) sample;
         if (reps->fake_uid != FakeTGsw::FAKE_TGSW_UID) abort();
+        return reps;
+    }
+
+    inline FakeTGswlvl2 *fake(TGswSamplelvl2 *sample) {
+        FakeTGswlvl2 *reps = (FakeTGswlvl2 *) sample;
+        if (reps->fake_uid != FakeTGswlvl2::FAKE_TGSW_UID) abort();
         return reps;
     }
 
@@ -198,10 +237,18 @@ namespace {
         FakeTGsw *fres = fake(result);
         fres->message->coefs[0] += message;
     }
+    inline void fake_tGswAddMuIntHlvl2(TGswSamplelvl2 *result, const int32_t message, const TGswParams *params) {
+        FakeTGswlvl2 *fres = fake(result);
+        fres->message->coefs[0] += message;
+    }
 
 #define USE_FAKE_tGswAddMuIntH \
     inline void tGswAddMuIntH(TGswSample* result, const int32_t message, const TGswParams* params) { \
     return fake_tGswAddMuIntH(result,message, params); \
+    }
+    
+    inline void tGswAddMuIntHlvl2(TGswSamplelvl2* result, const int32_t message, const TGswParams* params) { \
+    return fake_tGswAddMuIntHlvl2(result,message, params); \
     }
 
     // Result = tGsw(0)
@@ -211,9 +258,18 @@ namespace {
         fres->current_variance = alpha * alpha;
     }
 
+    inline void fake_tGswEncryptZerolvl2(TGswSamplelvl2 *result, double alpha, const TGswKey *key) {
+        FakeTGswlvl2 *fres = fake(result);
+        intPolynomialClear(fres->message);
+        fres->current_variance = alpha * alpha;
+    }
+
 #define USE_FAKE_tGswEncryptZero \
     inline void tGswEncryptZero(TGswSample* result, double alpha, const TGswKey* key) { \
     fake_tGswEncryptZero(result, alpha, key); \
+    }
+    inline void tGswEncryptZerolvl2(TGswSamplelvl2* result, double alpha, const TGswKey* key) { \
+    fake_tGswEncryptZerolvl2(result, alpha, key); \
     }
 
     //fonction de decomposition

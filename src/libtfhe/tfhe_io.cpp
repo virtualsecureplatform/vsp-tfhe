@@ -52,8 +52,9 @@ LweParams *read_new_lweParams(const Istream &F) {
     int32_t n = props->getProperty_int64_t("n");
     double alpha_min = props->getProperty_double("alpha_min");
     double alpha_max = props->getProperty_double("alpha_max");
+    double alpha_lvl21 = props->getProperty_double("alpha_lvl21");
     delete_TextModeProperties(props);
-    return new_LweParams(n, alpha_min, alpha_max);
+    return new_LweParams(n, alpha_min, alpha_max, alpha_lvl21);
 }
 
 
@@ -263,8 +264,9 @@ TLweParams *read_new_tLweParams(const Istream &F) {
     int32_t k = props->getProperty_int64_t("k");
     double alpha_min = props->getProperty_double("alpha_min");
     double alpha_max = props->getProperty_double("alpha_max");
+    double alpha_lvl21 = props->getProperty_double("alpha_alpha_lvl21");
     delete_TextModeProperties(props);
-    return new_TLweParams(N, k, alpha_min, alpha_max);
+    return new_TLweParams(N, k, alpha_min, alpha_max, alpha_lvl21);
 }
 
 
@@ -485,6 +487,14 @@ void write_tGswParams_section(const Ostream &F, const TGswParams *tgswparams) {
     print_TextModeProperties_toOStream(F, props);
     delete_TextModeProperties(props);
 }
+void write_tGswParamslvl2_section(const Ostream &F, const TGswParams *tgswparams) {
+    TextModeProperties *props = new_TextModeProperties_blank();
+    props->setTypeTitle("TGSWPARAMS");
+    props->setProperty_int64_t("lbar", tgswparams->l);
+    props->setProperty_int64_t("Bgbitbar", tgswparams->Bgbit);
+    print_TextModeProperties_toOStream(F, props);
+    delete_TextModeProperties(props);
+}
 
 /**
  * This function prints the tGsw parameters to a generic stream
@@ -508,6 +518,16 @@ TGswParams *read_new_tGswParams_section(const Istream &F, const TLweParams *tlwe
     return new_TGswParams(l, Bgbit, tlwe_params);
 }
 
+TGswParams *read_new_tGswParamslvl2_section(const Istream &F, const TLweParams *tlwe_params) {
+    TextModeProperties *props = new_TextModeProperties_fromIstream(F);
+    if (props->getTypeTitle() != string("TGSWPARAMS")) abort();
+    int32_t l = props->getProperty_int64_t("lbar");
+    int32_t Bgbit = props->getProperty_int64_t("Bgbitbar");
+    // ATTENTION ici!!!
+    delete_TextModeProperties(props);
+    return new_TGswParams(l, Bgbit, tlwe_params);
+}
+
 /**
  * This wrapper constructor function reads and creates a TGswParams from a generic stream. 
  * The result must be deleted with delete_TGswParams(), but the inner
@@ -517,6 +537,11 @@ TGswParams *read_new_tGswParams(const Istream &F) {
     TLweParams *tlwe_params = read_new_tLweParams(F);
     TfheGarbageCollector::register_param(tlwe_params);
     return read_new_tGswParams_section(F, tlwe_params);
+}
+TGswParams *read_new_tGswParamslvl2(const Istream &F) {
+    TLweParams *tlwe_params = read_new_tLweParams(F);
+    TfheGarbageCollector::register_param(tlwe_params);
+    return read_new_tGswParamslvl2_section(F, tlwe_params);
 }
 
 
@@ -1016,15 +1041,19 @@ write_tfheGateBootstrappingProperParameters_section(const Ostream &F, const TFhe
     props->setTypeTitle("GATEBOOTSPARAMS");
     props->setProperty_int64_t("ks_t", params->ks_t);
     props->setProperty_int64_t("ks_basebit", params->ks_basebit);
+    props->setProperty_int64_t("ks_tbar", params->ks_tbar);
+    props->setProperty_int64_t("ks_basebitlvl21", params->ks_basebitlvl21);
     print_TextModeProperties_toOStream(F, props);
     delete_TextModeProperties(props);
 }
 
-void read_tfheGateBootstrappingProperParameters_section(const Istream &F, int32_t &ks_t, int32_t &ks_basebit) {
+void read_tfheGateBootstrappingProperParameters_section(const Istream &F, int32_t &ks_t, int32_t &ks_basebit, int32_t &ks_tbar, int32_t &ks_basebitlvl21) {
     TextModeProperties *props = new_TextModeProperties_fromIstream(F);
     if (props->getTypeTitle() != string("GATEBOOTSPARAMS")) abort();
     ks_t = props->getProperty_int64_t("ks_t");
     ks_basebit = props->getProperty_double("ks_basebit");
+    ks_tbar = props->getProperty_int64_t("ks_tbar");
+    ks_basebitlvl21 = props->getProperty_double("ks_basebitlvl21");
     delete_TextModeProperties(props);
 }
 
@@ -1035,13 +1064,15 @@ void write_tfheGateBootstrappingParameters(const Ostream &F, const TFheGateBoots
 }
 
 TFheGateBootstrappingParameterSet *read_new_tfheGateBootstrappingParameters(const Istream &F) {
-    int32_t ks_t, ks_basebit;
-    read_tfheGateBootstrappingProperParameters_section(F, ks_t, ks_basebit);
+    int32_t ks_t, ks_basebit, ks_tbar, ks_basebitlvl21;
+    read_tfheGateBootstrappingProperParameters_section(F, ks_t, ks_basebit, ks_tbar, ks_basebitlvl21);
     LweParams *in_out_params = read_new_lweParams(F);
     TGswParams *bk_params = read_new_tGswParams(F);
+    TGswParams *bklvl02_params = read_new_tGswParamslvl2(F);
     TfheGarbageCollector::register_param(in_out_params);
     TfheGarbageCollector::register_param(bk_params);
-    return new TFheGateBootstrappingParameterSet(ks_t, ks_basebit, in_out_params, bk_params);
+    TfheGarbageCollector::register_param(bklvl02_params);
+    return new TFheGateBootstrappingParameterSet(ks_t, ks_basebit, in_out_params, bk_params, ks_tbar, ks_basebitlvl21, bklvl02_params);
 }
 
 /**

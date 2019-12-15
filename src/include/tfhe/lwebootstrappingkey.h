@@ -32,6 +32,31 @@ struct LweBootstrappingKey{
 
 };
 
+struct LweBootstrappingKeylvl02{
+    const LweParams* in_out_params; ///< paramètre de l'input et de l'output. key: s
+    const TGswParams* bk_params; ///< params of the Gsw elems in bk. key: s"
+    const TLweParams* accum_params; ///< params of the accum variable key: s"
+    const LweParams* extract_params; ///< params after extraction: key: s' 
+    TGswSamplelvl2* bk; ///< the bootstrapping key (s->s")
+    TLwePrivKeySwitchKey* ks; ///< the keyswitch key (s'->s)
+
+
+#ifdef __cplusplus
+   LweBootstrappingKeylvl02(const LweParams* in_out_params, 
+    const TGswParams* bk_params,
+    const TLweParams* accum_params,
+    const LweParams* extract_params,
+    TGswSamplelvl2* bk,
+    TLwePrivKeySwitchKey* ks);
+    ~LweBootstrappingKeylvl02();
+    LweBootstrappingKeylvl02(const LweBootstrappingKeylvl02&) = delete;
+    void operator=(const LweBootstrappingKeylvl02&) = delete;
+  
+#endif
+
+
+};
+
 
 struct LweBootstrappingKeyFFT {
     const LweParams* in_out_params; ///< paramètre de l'input et de l'output. key: s

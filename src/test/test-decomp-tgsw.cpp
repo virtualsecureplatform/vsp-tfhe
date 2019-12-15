@@ -28,6 +28,7 @@ int32_t main(int32_t argc, char **argv) {
     const int32_t k = 1;
     const double alpha_min_gsw = 0.;
     const double alpha_max_gsw = 0.071;
+    const double alpha_lvl21 = 0;
     const int32_t Msize = 2;
     const double alpha = 1e-6;
     const int32_t l = 3;
@@ -36,7 +37,7 @@ int32_t main(int32_t argc, char **argv) {
     static uniform_int_distribution<int32_t> unift(0, Msize - 1);
 
     // PARAMETERS
-    TLweParams *rlwe_params = new_TLweParams(N, k, alpha_min_gsw, alpha_max_gsw); //les deux alpha mis un peu au hasard
+    TLweParams *rlwe_params = new_TLweParams(N, k, alpha_min_gsw, alpha_max_gsw, alpha_lvl21); //les deux alpha mis un peu au hasard
     TGswParams *rgsw_params = new_TGswParams(l, Bgbits, rlwe_params);
     // KEY
     TGswKey *rgsw_key = new_TGswKey(rgsw_params);

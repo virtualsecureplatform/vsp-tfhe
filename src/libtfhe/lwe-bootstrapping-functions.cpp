@@ -215,6 +215,36 @@ EXPORT void tfhe_createLweBootstrappingKey(
     }
 
 }
+EXPORT void tfhe_createLweBootstrappingKeylvl02(
+        LweBootstrappingKeylvl02 *bk,
+        const LweKey *key_in,
+        const TGswKey *tgsw_keylvl1,
+        const TGswKey *tgsw_keylvl2) {
+    assert(bk->bk_params == tgsw_keylvl2->params);
+    assert(bk->in_out_params == key_in->params);
+
+    const LweParams *in_out_params = bk->in_out_params;
+    const TGswParams *bk_params = bk->bk_params;
+    const TLweParams *accum_params = bk_params->tlwe_params;
+
+    //LweKeySwitchKey* ks; ///< the keyswitch key (s'->s)
+    const TLweKey *accum_key = &tgsw_keylvl2->tlwe_key;
+    tlweCreatePrivKeySwitchKey(bk->ks, accum_key, &tgsw_keylvl1->tlwe_key, key_in);
+
+    //TGswSample* bk; ///< the bootstrapping key (s->s")
+    int32_t *kin = key_in->key;
+    const double alpha = accum_params->alpha_min;
+    const int32_t n = in_out_params->n;
+    //const int32_t kpl = bk_params->kpl;
+    //const int32_t k = accum_params->k;
+    //const int32_t N = accum_params->N;
+    //cout << "create the bootstrapping key bk ("  << "  " << n*kpl*(k+1)*N*4 << " bytes)" << endl;
+    //cout << "  with noise_stdev: " << alpha << endl;
+    for (int32_t i = 0; i < n; i++) {
+        tGswSymEncryptIntlvl2(&bk->bk[i], kin[i], alpha, tgsw_keylvl2);
+    }
+
+}
 #endif
 
 

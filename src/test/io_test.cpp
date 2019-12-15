@@ -9,19 +9,19 @@ using namespace std;
 
 namespace {
 
-    const LweParams* lweparams500 = new_LweParams(500,0.1,0.3);
-    const LweParams* lweparams120 = new_LweParams(120,0.1,0.3);
+    const LweParams* lweparams500 = new_LweParams(500,0.1,0.3, 0.);
+    const LweParams* lweparams120 = new_LweParams(120,0.1,0.3, 0.);
     const set<const LweParams*> allparams = { lweparams120, lweparams500 };
 
-    const TLweParams* tlweparams1024_1 = new_TLweParams(1024,1,0.1,0.3);
-    const TLweParams* tlweparams128_2 = new_TLweParams(128,2,0.1,0.3);
+    const TLweParams* tlweparams1024_1 = new_TLweParams(1024,1,0.1,0.3, 0.);
+    const TLweParams* tlweparams128_2 = new_TLweParams(128,2,0.1,0.3, 0.);
     const set<const TLweParams*> allparams_tlwe = { tlweparams128_2, tlweparams1024_1 };
 
     const TGswParams* tgswparams1024_1 = new_TGswParams(3,15,tlweparams1024_1);
     const TGswParams* tgswparams128_2 = new_TGswParams(7,4,tlweparams128_2);
     const set<const TGswParams*> allparams_tgsw = { tgswparams1024_1, tgswparams128_2};
 
-    const TFheGateBootstrappingParameterSet* gbp1 = new TFheGateBootstrappingParameterSet(6,2,lweparams120,tgswparams128_2);
+    const TFheGateBootstrappingParameterSet* gbp1 = new TFheGateBootstrappingParameterSet(6,2,lweparams120,tgswparams128_2,8,10,tgswparams1024_1);
     const set<const TFheGateBootstrappingParameterSet*> allgbp = { gbp1 };
 
     //generate a random lwekey

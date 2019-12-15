@@ -27,13 +27,13 @@ int32_t main(int32_t argc, char **argv) {
 
     const int32_t N = 2048;
     IntPolynomial *a = new_IntPolynomial(N);
-    TorusPolynomial *b = new_TorusPolynomial(N);
-    TorusPolynomial *resNaive = new_TorusPolynomial(N);
-    TorusPolynomial *resFFT = new_TorusPolynomial(N);
-    TorusPolynomial *resKaratsuba = new_TorusPolynomial(N);
+    TorusPolynomiallvl2 *b = new_TorusPolynomiallvl2(N);
+    // TorusPolynomial *resNaive = new_TorusPolynomial(N);
+    TorusPolynomiallvl2 *resFFT = new_TorusPolynomiallvl2(N);
+    TorusPolynomiallvl2 *resKaratsuba = new_TorusPolynomiallvl2(N);
     // LagrangeHalfCPolynomial* test_fft = new_LagrangeHalfCPolynomial(N);
 
-    double cycles_naive[count];
+    // double cycles_naive[count];
     double cycles_karatsuba[count];
     double cycles_fft[count];
 
@@ -46,13 +46,13 @@ int32_t main(int32_t argc, char **argv) {
         //measure the execution time
         clock_t cstart, cend;
 
-        cstart = clock();
-        torusPolynomialMultNaive(resNaive, a, b);
-        cend = clock();
-        cycles_naive[i] = cend - cstart;
+        // cstart = clock();
+        // torusPolynomialMultNaive(resNaive, a, b);
+        // cend = clock();
+        // cycles_naive[i] = cend - cstart;
 
         cstart = clock();
-        torusPolynomialMultKaratsuba(resKaratsuba, a, b);
+        torusPolynomiallvl2MultKaratsuba(resKaratsuba, a, b);
         cend = clock();
         cycles_karatsuba[i] = cend - cstart;
 
@@ -63,16 +63,22 @@ int32_t main(int32_t argc, char **argv) {
         cend = clock();
         cycles_fft[i] = cend - cstart;
 
+        // for (int32_t i = 0; i < N; i++) {
+        //     if (abs(int32_t(resNaive->coefsT[i] - resKaratsuba->coefsT[i])) > 1) {
+        //         cerr << i << " " << resNaive->coefsT[i] << " vs. " << resKaratsuba->coefsT[i] << endl;
+        //         dieDramatically("Naive != Karatsuba\n");
+        //     }
+        // }
+        // for (int32_t i = 0; i < N; i++) {
+        //     if (abs(int32_t(resNaive->coefsT[i] - resFFT->coefsT[i])) > 1) {
+        //         cerr << i << " " << resNaive->coefsT[i] << " vs. " << resFFT->coefsT[i] << endl;
+        //         dieDramatically("Naive != FFT\n");
+        //     }
+        // }
         for (int32_t i = 0; i < N; i++) {
-            if (abs(int32_t(resNaive->coefsT[i] - resKaratsuba->coefsT[i])) > 1) {
-                cerr << i << " " << resNaive->coefsT[i] << " vs. " << resKaratsuba->coefsT[i] << endl;
-                dieDramatically("Naive != Karatsuba\n");
-            }
-        }
-        for (int32_t i = 0; i < N; i++) {
-            if (abs(int32_t(resNaive->coefsT[i] - resFFT->coefsT[i])) > 1) {
-                cerr << i << " " << resNaive->coefsT[i] << " vs. " << resFFT->coefsT[i] << endl;
-                dieDramatically("Naive != FFT\n");
+            if (abs(int32_t(resKaratsuba->coefsT[i] - resFFT->coefsT[i])) > 1) {
+                cerr << i << " " << resKaratsuba->coefsT[i] << " vs. " << resFFT->coefsT[i] << endl;
+                dieDramatically("Karatsuba != FFT\n");
             }
         }
     }
@@ -82,7 +88,7 @@ int32_t main(int32_t argc, char **argv) {
     double cyc_karatsuba = 0;
     double cyc_fft = 0;
     for (int32_t i = 0; i < count; ++i) {
-        cyc_naive += cycles_naive[i];
+        // cyc_naive += cycles_naive[i];
         cyc_karatsuba += cycles_karatsuba[i];
         cyc_fft += cycles_fft[i];
     }
@@ -101,8 +107,8 @@ int32_t main(int32_t argc, char **argv) {
     cout << endl;
 
     delete_IntPolynomial(a);
-    delete_TorusPolynomial(b);
-    delete_TorusPolynomial(resNaive);
-    delete_TorusPolynomial(resKaratsuba);
+    delete_TorusPolynomiallvl2(b);
+    // delete_TorusPolynomiallvl2(resNaive);
+    delete_TorusPolynomiallvl2(resKaratsuba);
     return 0;
 }

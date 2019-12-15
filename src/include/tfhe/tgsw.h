@@ -74,6 +74,28 @@ struct TGswSample {
 
 #endif
 };
+struct TGswSamplelvl2 {
+    TLweSamplelvl2 *all_sample; ///< TLweSample* all_sample; (k+1)l TLwe Sample
+    TLweSamplelvl2 **bloc_sample;///< accès optionnel aux différents blocs de taille l.
+    // double current_variance;
+    const int32_t k;
+    const int32_t lbar;
+
+#ifdef __cplusplus
+
+    inline TGswSamplelvl2(TLweSamplelvl2 *all_sample, TLweSamplelvl2 **bloc_sample, const int32_t k, const int32_t lbar) :
+            all_sample(all_sample),
+            bloc_sample(bloc_sample),
+            k(k), lbar(lbar) {}
+
+    inline ~TGswSamplelvl2() {}
+
+    TGswSamplelvl2(const TGswSamplelvl2 &) = delete;
+
+    void operator=(const TGswSamplelvl2 &) = delete;
+
+#endif
+};
 
 struct TGswSampleFFT {
     TLweSampleFFT *all_samples; ///< TLweSample* all_sample; (k+1)l TLwe Sample

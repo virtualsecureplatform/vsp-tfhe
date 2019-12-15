@@ -26,12 +26,13 @@ EXPORT void die_dramatically(const char* message);
 // This looks much better than using float/doubles, where modulo 1 is not
 // natural at all.
 typedef int32_t Torus32; //avant uint32_t
-//typedef int64_t Torus64; //avant uint64_t
+typedef int64_t Torus64; //avant uint64_t
 
 struct LweParams;
 struct LweKey;
 struct LweSample;
 struct LweKeySwitchKey;
+struct TLwePrivKeySwitchKey;
 struct TLweParams;
 struct TLweKey;
 struct TLweSample;
@@ -55,18 +56,22 @@ typedef struct LweParams           LweParams;
 typedef struct LweKey              LweKey;
 typedef struct LweSample           LweSample;
 typedef struct LweKeySwitchKey     LweKeySwitchKey;
+typedef struct TLwePrivKeySwitchKey     TLwePrivKeySwitchKey;
 typedef struct TLweParams       TLweParams;
 typedef struct TLweKey          TLweKey;
 typedef struct TLweSample       TLweSample;
+typedef struct TLweSamplelvl2       TLweSamplelvl2;
 typedef struct TLweSampleFFT       TLweSampleFFT;
 typedef struct TGswParams       TGswParams;
 typedef struct TGswKey          TGswKey;
 typedef struct TGswSample       TGswSample;
+typedef struct TGswSamplelvl2       TGswSamplelvl2;
 typedef struct TGswSampleFFT       TGswSampleFFT;
 typedef struct LweBootstrappingKey LweBootstrappingKey;
 typedef struct LweBootstrappingKeyFFT LweBootstrappingKeyFFT;
 typedef struct IntPolynomial	   IntPolynomial;
 typedef struct TorusPolynomial	   TorusPolynomial;
+typedef struct TorusPolynomiallvl2	   TorusPolynomiallvl2;
 typedef struct LagrangeHalfCPolynomial	   LagrangeHalfCPolynomial;
 typedef struct TFheGateBootstrappingParameterSet TFheGateBootstrappingParameterSet;
 typedef struct TFheGateBootstrappingCloudKeySet TFheGateBootstrappingCloudKeySet;
