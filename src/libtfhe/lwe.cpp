@@ -51,6 +51,19 @@ EXPORT void tLweExtractLweSampleIndex(LweSample* result, const TLweSample* x, co
     }
     result->b = x->b->coefsT[index];
 }
+EXPORT void tLwelvl2ExtractLweSampleIndex(LweSamplelvl2* result, const TLweSamplelvl2* x, const int32_t index, const LweParams* params,  const TLweParams* rparams) {
+    const int32_t N = rparams->N;
+    const int32_t k = rparams->k;
+    assert(params->n == k*N);
+
+    for (int32_t i=0; i<k; i++) {
+      for (int32_t j=0; j<=index; j++)
+        result->a[i*N+j] = x->a[i].coefsT[index-j];
+      for (int32_t j=index+1; j<N; j++)
+        result->a[i*N+j] = -x->a[i].coefsT[N+index-j];
+    }
+    result->b = x->b->coefsT[index];
+}
 
 
 
@@ -58,7 +71,9 @@ EXPORT void tLweExtractLweSampleIndex(LweSample* result, const TLweSample* x, co
 EXPORT void tLweExtractLweSample(LweSample* result, const TLweSample* x, const LweParams* params,  const TLweParams* rparams) {
     tLweExtractLweSampleIndex(result, x, 0, params, rparams);
 }
-
+EXPORT void tLwelvl2ExtractLweSample(LweSamplelvl2* result, const TLweSamplelvl2* x, const LweParams* params,  const TLweParams* rparams) {
+    tLwelvl2ExtractLweSampleIndex(result, x, 0, params, rparams);
+}
 
 
 //extractions Ring Lwe -> Lwe

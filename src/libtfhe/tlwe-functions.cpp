@@ -137,6 +137,16 @@ EXPORT void tLweCopy(TLweSample *result, const TLweSample *sample, const TLwePar
 
     result->current_variance = sample->current_variance;
 }
+EXPORT void tLwelvl2Copy(TLweSamplelvl2 *result, const TLweSamplelvl2 *sample, const TLweParams *params) {
+    const int32_t k = params->k;
+    const int32_t N = params->N;
+
+    for (int32_t i = 0; i <= k; ++i)
+        for (int32_t j = 0; j < N; ++j)
+            result->a[i].coefsT[j] = sample->a[i].coefsT[j];
+
+    result->current_variance = sample->current_variance;
+}
 
 
 
@@ -146,6 +156,13 @@ EXPORT void tLweNoiselessTrivial(TLweSample *result, const TorusPolynomial *mu, 
 
     for (int32_t i = 0; i < k; ++i) torusPolynomialClear(&result->a[i]);
     torusPolynomialCopy(result->b, mu);
+    result->current_variance = 0.;
+}
+EXPORT void tLwelvl2NoiselessTrivial(TLweSamplelvl2 *result, const TorusPolynomiallvl2 *mu, const TLweParams *params) {
+    const int32_t k = params->k;
+
+    for (int32_t i = 0; i < k; ++i) torusPolynomiallvl2Clear(&result->a[i]);
+    torusPolynomiallvl2Copy(result->b, mu);
     result->current_variance = 0.;
 }
 
@@ -261,9 +278,16 @@ EXPORT void destroy_TLweSample(TLweSample *obj) {
     (obj)->~TLweSample();
 }
 
+EXPORT void init_TLweSamplelvl2(TLweSamplelvl2 *obj, const TLweParams *params) {
+    new(obj) TLweSamplelvl2(params);
+}
+EXPORT void destroy_TLweSamplelvl2(TLweSamplelvl2 *obj) {
+    (obj)->~TLweSamplelvl2();
+}
+
 USE_DEFAULT_CONSTRUCTOR_DESTRUCTOR_IMPLEMENTATIONS1(TLweKey, TLweParams);
 USE_DEFAULT_CONSTRUCTOR_DESTRUCTOR_IMPLEMENTATIONS1(TLweSample, TLweParams);
-
+USE_DEFAULT_CONSTRUCTOR_DESTRUCTOR_IMPLEMENTATIONS1(TLweSamplelvl2, TLweParams);
 
 
 

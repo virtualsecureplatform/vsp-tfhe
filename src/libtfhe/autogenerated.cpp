@@ -317,12 +317,18 @@ EXPORT TorusPolynomial* alloc_TorusPolynomial() {
 EXPORT TorusPolynomial* alloc_TorusPolynomial_array(int32_t nbelts) {
     return (TorusPolynomial*) malloc(nbelts*sizeof(TorusPolynomial));
 }
+EXPORT TorusPolynomiallvl2* alloc_TorusPolynomiallvl2_array(int32_t nbelts) {
+    return (TorusPolynomiallvl2*) malloc(nbelts*sizeof(TorusPolynomiallvl2));
+}
 
 //free memory space for a LweKey
 EXPORT void free_TorusPolynomial(TorusPolynomial* ptr) {
     free(ptr);
 }
 EXPORT void free_TorusPolynomial_array(int32_t nbelts, TorusPolynomial* ptr) {
+    free(ptr);
+}
+EXPORT void free_TorusPolynomiallvl2_array(int32_t nbelts, TorusPolynomiallvl2* ptr) {
     free(ptr);
 }
 
@@ -336,6 +342,11 @@ EXPORT void init_TorusPolynomial_array(int32_t nbelts, TorusPolynomial* obj, con
 	new(obj+i) TorusPolynomial(N);
     }
 }
+EXPORT void init_TorusPolynomiallvl2_array(int32_t nbelts, TorusPolynomiallvl2* obj, const int32_t N) {
+    for (int32_t i=0; i<nbelts; i++) {
+	new(obj+i) TorusPolynomiallvl2(N);
+    }
+}
 
 //destroys the TorusPolynomial structure
 //(equivalent of the C++ destructor)
@@ -345,6 +356,11 @@ EXPORT void destroy_TorusPolynomial(TorusPolynomial* obj) {
 EXPORT void destroy_TorusPolynomial_array(int32_t nbelts, TorusPolynomial* obj) {
     for (int32_t i=0; i<nbelts; i++) {
 	(obj+i)->~TorusPolynomial();
+    }
+}
+EXPORT void destroy_TorusPolynomiallvl2_array(int32_t nbelts, TorusPolynomiallvl2* obj) {
+    for (int32_t i=0; i<nbelts; i++) {
+	(obj+i)->~TorusPolynomiallvl2();
     }
 }
  
@@ -362,6 +378,11 @@ EXPORT TorusPolynomial* new_TorusPolynomial_array(int32_t nbelts, const int32_t 
     init_TorusPolynomial_array(nbelts,obj,N);
     return obj;
 }
+EXPORT TorusPolynomiallvl2* new_TorusPolynomiallvl2_array(int32_t nbelts, const int32_t N) {
+    TorusPolynomiallvl2* obj = alloc_TorusPolynomiallvl2_array(nbelts);
+    init_TorusPolynomiallvl2_array(nbelts,obj,N);
+    return obj;
+}
 
 //destroys and frees the TorusPolynomial structure
 //(equivalent of the C++ delete)
@@ -374,4 +395,8 @@ EXPORT void delete_TorusPolynomiallvl2(TorusPolynomiallvl2* obj) {
 EXPORT void delete_TorusPolynomial_array(int32_t nbelts, TorusPolynomial* obj) {
     destroy_TorusPolynomial_array(nbelts,obj);
     free_TorusPolynomial_array(nbelts,obj);
+}
+EXPORT void delete_TorusPolynomiallvl2_array(int32_t nbelts, TorusPolynomiallvl2* obj) {
+    destroy_TorusPolynomiallvl2_array(nbelts,obj);
+    free_TorusPolynomiallvl2_array(nbelts,obj);
 }

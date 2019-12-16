@@ -20,8 +20,10 @@ EXPORT Torus32 tLweSymDecryptT(const TLweSample *sample, const TLweKey *key, int
 EXPORT void tLweClear(TLweSample *result, const TLweParams *params);
 /** result = sample */
 EXPORT void tLweCopy(TLweSample *result, const TLweSample *sample, const TLweParams *params);
+EXPORT void tLwelvl2Copy(TLweSamplelvl2 *result, const TLweSamplelvl2 *sample, const TLweParams *params);
 /** result = (0,mu) */
 EXPORT void tLweNoiselessTrivial(TLweSample *result, const TorusPolynomial *mu, const TLweParams *params);
+EXPORT void tLwelvl2NoiselessTrivial(TLweSamplelvl2 *result, const TorusPolynomiallvl2 *mu, const TLweParams *params);
 /** result = result + sample */
 EXPORT void tLweAddTo(TLweSample *result, const TLweSample *sample, const TLweParams *params);
 EXPORT void tLwelvl2AddTo(TLweSamplelvl2 *result, const TLweSamplelvl2 *sample, const TLweParams *params);
@@ -56,6 +58,8 @@ EXPORT void tLweExtractLweSampleIndex(LweSample *result, const TLweSample *x, co
                                       const TLweParams *rparams);
 EXPORT void
 tLweExtractLweSample(LweSample *result, const TLweSample *x, const LweParams *params, const TLweParams *rparams);
+EXPORT void
+tLwelvl2ExtractLweSample(LweSamplelvl2 *result, const TLweSamplelvl2 *x, const LweParams *params, const TLweParams *rparams);
 
 
 //extractions TLwe -> Lwe

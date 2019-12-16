@@ -121,6 +121,31 @@ EXPORT void tfhe_blindRotate_FFT(TLweSample *accum,
     delete_TLweSample(temp);
     //delete_TGswSampleFFT(temp);
 }
+EXPORT void tfhe_blindRotatelvl2_FFT(TLweSamplelvl2 *accum,
+                                 const TGswSampleFFT *bkFFT,
+                                 const int32_t *bara,
+                                 const int32_t n,
+                                 const TGswParams *bk_params) {
+
+    //TGswSampleFFT* temp = new_TGswSampleFFT(bk_params);
+    TLweSamplelvl2 *temp = new_TLweSamplelvl2(bk_params->tlwe_params);
+    TLweSamplelvl2 *temp2 = temp;
+    TLweSamplelvl2 *temp3 = accum;
+
+    for (int32_t i = 0; i < n; i++) {
+        const int32_t barai = bara[i];
+        if (barai == 0) continue; //indeed, this is an easy case!
+
+        tfhe_MuxRotatelvl2_FFT(temp2, temp3, bkFFT + i, barai, bk_params);
+        swap(temp2, temp3);
+    }
+    if (temp3 != accum) {
+        tLwelvl2Copy(accum, temp3, bk_params->tlwe_params);
+    }
+
+    delete_TLweSamplelvl2(temp);
+    //delete_TGswSampleFFT(temp);
+}
 #endif
 
 
@@ -164,6 +189,36 @@ EXPORT void tfhe_blindRotateAndExtract_FFT(LweSample *result,
 
     delete_TLweSample(acc);
     delete_TorusPolynomial(testvectbis);
+}
+EXPORT void tfhe_blindRotateAndExtractlvl2_FFT(LweSamplelvl2 *result,
+                                           const TorusPolynomiallvl2 *v,
+                                           const TGswSampleFFT *bk,
+                                           const int32_t barb,
+                                           const int32_t *bara,
+                                           const int32_t n,
+                                           const TGswParams *bk_params) {
+
+    const TLweParams *accum_params = bk_params->tlwe_params;
+    const LweParams *extract_params = &accum_params->extracted_lweparams;
+    const int32_t N = accum_params->N;
+    const int32_t _2N = 2 * N;
+
+    // Test polynomial 
+    TorusPolynomiallvl2 *testvectbis = new_TorusPolynomiallvl2(N);
+    // Accumulator
+    TLweSamplelvl2 *acc = new_TLweSamplelvl2(accum_params);
+
+    // testvector = X^{2N-barb}*v
+    if (barb != 0) torusPolynomiallvl2MulByXai(testvectbis, _2N - barb, v);
+    else torusPolynomiallvl2Copy(testvectbis, v);
+    tLwelvl2NoiselessTrivial(acc, testvectbis, accum_params);
+    // Blind rotation
+    tfhe_blindRotatelvl2_FFT(acc, bk, bara, n, bk_params);
+    // Extraction
+    tLwelvl2ExtractLweSample(result, acc, extract_params, accum_params);
+
+    delete_TLweSamplelvl2(acc);
+    delete_TorusPolynomiallvl2(testvectbis);
 }
 #endif
 

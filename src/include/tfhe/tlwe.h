@@ -198,6 +198,7 @@ EXPORT void delete_TLweKey_array(int32_t nbelts, TLweKey *obj);
 
 /** allocate space for a single TLweSample */
 EXPORT TLweSample *alloc_TLweSample();
+EXPORT TLweSamplelvl2 *alloc_TLweSamplelvl2();
 /** allocate space for an array of TLweSample 
  * @param nbelts the number of elements */
 EXPORT TLweSample *alloc_TLweSample_array(int32_t nbelts);
@@ -205,6 +206,7 @@ EXPORT TLweSample *alloc_TLweSample_array(int32_t nbelts);
 /** free memory space for a single TLweSample 
  * @param ptr the pointer to release */
 EXPORT void free_TLweSample(TLweSample *ptr);
+EXPORT void free_TLweSamplelvl2(TLweSamplelvl2 *ptr);
 /** free memory space for an array of TLweSample 
  * @param nbelts the number of elements 
  * @param ptr the pointer to release */
@@ -215,6 +217,7 @@ EXPORT void free_TLweSample_array(int32_t nbelts, TLweSample *ptr);
  * @param params the LWE parameters to use
  */
 EXPORT void init_TLweSample(TLweSample *ptr, const TLweParams *params);
+EXPORT void init_TLweSamplelvl2(TLweSamplelvl2 *ptr, const TLweParams *params);
 
 /** initializes (constructor) an array of TLweSamples on an already allocated space 
  * @param nbelts the number of elements to initialize 
@@ -222,11 +225,13 @@ EXPORT void init_TLweSample(TLweSample *ptr, const TLweParams *params);
  * @param params the LWE parameters to use
  */
 EXPORT void init_TLweSample_array(int32_t nbelts, TLweSample *ptr, const TLweParams *params);
+EXPORT void init_TLweSamplelvl2_array(int32_t nbelts, TLweSamplelvl2 *ptr, const TLweParams *params);
 
 /** finalizes (destructor) a single TLweSample (before freeing the memory space) 
  * @param ptr the pointer to the first element
  */
 EXPORT void destroy_TLweSample(TLweSample *ptr);
+EXPORT void destroy_TLweSamplelvl2(TLweSamplelvl2 *ptr);
 
 /** finalizes (destructor) an array of TLweSamples (before freeing the memory space) 
  * @param nbelts the number of elements to initialize 
@@ -238,6 +243,7 @@ EXPORT void destroy_TLweSample_array(int32_t nbelts, TLweSample *ptr);
  * @param params the LWE parameters to use
  */
 EXPORT TLweSample *new_TLweSample(const TLweParams *params);
+EXPORT TLweSamplelvl2 *new_TLweSamplelvl2(const TLweParams *params);
 /** allocates and initializes (constructor) a single TLweSample 
  * @param nbelts the number of consecutive elements to create 
  * @param params the LWE parameters to use
@@ -247,6 +253,7 @@ EXPORT TLweSample *new_TLweSample_array(int32_t nbelts, const TLweParams *params
 /** destroy and frees memory space for a single TLweSample 
  * @param ptr the pointer to release */
 EXPORT void delete_TLweSample(TLweSample *obj);
+EXPORT void delete_TLweSamplelvl2(TLweSamplelvl2 *obj);
 /** destroys and free memory space for an array of TLweSample 
  * @param nbelts the number of elements 
  * @param ptr the pointer to release */

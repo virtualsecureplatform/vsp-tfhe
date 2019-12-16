@@ -12,6 +12,11 @@ EXPORT void torusPolynomialClear(TorusPolynomial *result) {
 
     for (int32_t i = 0; i < N; ++i) result->coefsT[i] = 0;
 }
+EXPORT void torusPolynomiallvl2Clear(TorusPolynomiallvl2 *result) {
+    const int32_t N = result->N;
+
+    for (int32_t i = 0; i < N; ++i) result->coefsT[i] = 0;
+}
 
 // TorusPolynomial = random
 EXPORT void torusPolynomialUniform(TorusPolynomial *result) {
@@ -38,6 +43,16 @@ EXPORT void torusPolynomialCopy(
     const int32_t N = result->N;
     const Torus32 *__restrict s = sample->coefsT;
     Torus32 *__restrict r = result->coefsT;
+
+    for (int32_t i = 0; i < N; ++i) r[i] = s[i];
+}
+EXPORT void torusPolynomiallvl2Copy(
+        TorusPolynomiallvl2 *result,
+        const TorusPolynomiallvl2 *sample) {
+    assert(result != sample);
+    const int32_t N = result->N;
+    const Torus64 *__restrict s = sample->coefsT;
+    Torus64 *__restrict r = result->coefsT;
 
     for (int32_t i = 0; i < N; ++i) r[i] = s[i];
 }
@@ -179,6 +194,27 @@ EXPORT void torusPolynomialMulByXai(TorusPolynomial *result, int32_t a, const To
     const int32_t N = source->N;
     Torus32 *out = result->coefsT;
     Torus32 *in = source->coefsT;
+
+    assert(a >= 0 && a < 2 * N);
+    assert(result != source);
+
+    if (a < N) {
+        for (int32_t i = 0; i < a; i++)//sur que i-a<0
+            out[i] = -in[i - a + N];
+        for (int32_t i = a; i < N; i++)//sur que N>i-a>=0
+            out[i] = in[i - a];
+    } else {
+        const int32_t aa = a - N;
+        for (int32_t i = 0; i < aa; i++)//sur que i-a<0
+            out[i] = in[i - aa + N];
+        for (int32_t i = aa; i < N; i++)//sur que N>i-a>=0
+            out[i] = -in[i - aa];
+    }
+}
+EXPORT void torusPolynomiallvl2MulByXai(TorusPolynomiallvl2 *result, int32_t a, const TorusPolynomiallvl2 *source) {
+    const int32_t N = source->N;
+    Torus64 *out = result->coefsT;
+    Torus64 *in = source->coefsT;
 
     assert(a >= 0 && a < 2 * N);
     assert(result != source);

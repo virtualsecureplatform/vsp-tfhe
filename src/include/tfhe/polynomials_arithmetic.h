@@ -10,6 +10,7 @@
 
 /**  TorusPolynomial = 0 */
 EXPORT void torusPolynomialClear(TorusPolynomial* result);
+EXPORT void torusPolynomiallvl2Clear(TorusPolynomiallvl2* result);
 
 /**  TorusPolynomial = random */
 EXPORT void torusPolynomialUniform(TorusPolynomial* result);
@@ -17,6 +18,7 @@ EXPORT void torusPolynomialUniformlvl2(TorusPolynomiallvl2* result);
 
 /**  TorusPolynomial = TorusPolynomial */
 EXPORT void torusPolynomialCopy(TorusPolynomial* result, const TorusPolynomial*  sample);
+EXPORT void torusPolynomiallvl2Copy(TorusPolynomiallvl2* result, const TorusPolynomiallvl2*  sample);
 
 /**  TorusPolynomial + TorusPolynomial */
 EXPORT void torusPolynomialAdd(TorusPolynomial* result, const TorusPolynomial* poly1, const TorusPolynomial* poly2);
@@ -50,6 +52,7 @@ EXPORT void torusPolynomiallvl2MulByXaiMinusOne(TorusPolynomiallvl2* result, int
 
 /** result= X^{a}*source */
 EXPORT void torusPolynomialMulByXai(TorusPolynomial* result, int32_t a, const TorusPolynomial* source);
+EXPORT void torusPolynomiallvl2MulByXai(TorusPolynomiallvl2* result, int32_t a, const TorusPolynomiallvl2* source);
 
 /**  Norme Euclidienne d'un IntPolynomial */
 EXPORT double intPolynomialNormSq2(const IntPolynomial* poly);
