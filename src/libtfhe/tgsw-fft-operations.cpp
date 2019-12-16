@@ -52,6 +52,12 @@ EXPORT void tGswToFFTConvert(TGswSampleFFT *result, const TGswSample *source, co
     for (int32_t p = 0; p < kpl; p++)
         tLweToFFTConvert(result->all_samples + p, source->all_sample + p, params->tlwe_params);
 }
+EXPORT void tGswlvl2ToFFTConvert(TGswSampleFFT *result, const TGswSamplelvl2 *source, const TGswParams *params) {
+    const int32_t kpl = params->kpl;
+
+    for (int32_t p = 0; p < kpl; p++)
+        tLwelvl2ToFFTConvert(result->all_samples + p, source->all_sample + p, params->tlwe_params);
+}
 
 // For all the kpl TLWE samples composing the TGSW sample 
 // It computes the FFT of the coefficients of the TLWEfft sample
@@ -107,6 +113,32 @@ EXPORT void tGswFFTExternMulToTLwe(TLweSample *accum, const TGswSampleFFT *gsw, 
         tLweFFTAddMulRTo(tmpa, decaFFT + p, gsw->all_samples + p, tlwe_params);
     }
     tLweFromFFTConvert(accum, tmpa, tlwe_params);
+
+    delete_TLweSampleFFT(tmpa);
+    delete_LagrangeHalfCPolynomial_array(kpl, decaFFT);
+    delete_IntPolynomial_array(kpl, deca);
+}
+EXPORT void tGswFFTExternMulToTLwelvl2(TLweSamplelvl2 *accum, const TGswSampleFFT *gsw, const TGswParams *params) {
+    const TLweParams *tlwe_params = params->tlwe_params;
+    const int32_t k = tlwe_params->k;
+    const int32_t l = params->l;
+    const int32_t kpl = params->kpl;
+    const int32_t N = tlwe_params->N;
+    //TODO attention, improve these new/delete...
+    IntPolynomial *deca = new_IntPolynomial_array(kpl, N); //decomposed accumulator
+    LagrangeHalfCPolynomial *decaFFT = new_LagrangeHalfCPolynomial_array(kpl, N); //fft version
+    TLweSampleFFT *tmpa = new_TLweSampleFFT(tlwe_params);
+
+    for (int32_t i = 0; i <= k; i++)
+        tGswTorus64PolynomialDecompH(deca + i * l, accum->a + i, params);
+    for (int32_t p = 0; p < kpl; p++)
+        IntPolynomiallvl2_ifft(decaFFT + p, deca + p);
+
+    tLweFFTClear(tmpa, tlwe_params);
+    for (int32_t p = 0; p < kpl; p++) {
+        tLweFFTAddMulRTo(tmpa, decaFFT + p, gsw->all_samples + p, tlwe_params);
+    }
+    tLwelvl2FromFFTConvert(accum, tmpa, tlwe_params);
 
     delete_TLweSampleFFT(tmpa);
     delete_LagrangeHalfCPolynomial_array(kpl, decaFFT);

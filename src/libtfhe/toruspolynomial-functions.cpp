@@ -152,6 +152,27 @@ EXPORT void torusPolynomialMulByXaiMinusOne(TorusPolynomial *result, int32_t a, 
     }
 }
 
+EXPORT void torusPolynomiallvl2MulByXaiMinusOne(TorusPolynomiallvl2 *result, int32_t a, const TorusPolynomiallvl2 *source) {
+    const int32_t N = source->N;
+    Torus64 *out = result->coefsT;
+    Torus64 *in = source->coefsT;
+
+    assert(a >= 0 && a < 2 * N);
+
+    if (a < N) {
+        for (int32_t i = 0; i < a; i++)//sur que i-a<0
+            out[i] = -in[i - a + N] - in[i];
+        for (int32_t i = a; i < N; i++)//sur que N>i-a>=0
+            out[i] = in[i - a] - in[i];
+    } else {
+        const int32_t aa = a - N;
+        for (int32_t i = 0; i < aa; i++)//sur que i-a<0
+            out[i] = in[i - aa + N] - in[i];
+        for (int32_t i = aa; i < N; i++)//sur que N>i-a>=0
+            out[i] = -in[i - aa] - in[i];
+    }
+}
+
 
 //result= X^{a}*source
 EXPORT void torusPolynomialMulByXai(TorusPolynomial *result, int32_t a, const TorusPolynomial *source) {

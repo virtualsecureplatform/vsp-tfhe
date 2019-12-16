@@ -429,6 +429,32 @@ tGswTorus32PolynomialDecompH(IntPolynomial *result, const TorusPolynomial *sampl
     }
 #endif
 }
+EXPORT void
+tGswTorus64PolynomialDecompH(IntPolynomial *result, const TorusPolynomiallvl2 *sample, const TGswParams *params) {
+    const int32_t N = params->tlwe_params->N;
+    const int32_t l = params->l;
+    const int32_t Bgbit = params->Bgbit;
+    uint64_t *buf = (uint64_t *) sample->coefsT;
+    const uint32_t maskMod = params->maskMod;
+    const int32_t halfBg = params->halfBg;
+    const uint32_t offset = params->offset;
+
+    //First, add offset to everyone
+    for (int32_t j = 0; j < N; ++j) buf[j] += offset;
+
+    //then, do the decomposition (in parallel)
+    for (int32_t p = 0; p < l; ++p) {
+        const int32_t decal = (32 - (p + 1) * Bgbit);
+        int32_t *res_p = result[p].coefs;
+        for (int32_t j = 0; j < N; ++j) {
+            uint32_t temp1 = (buf[j] >> decal) & maskMod;
+            res_p[j] = temp1 - halfBg;
+        }
+    }
+
+    //finally, remove offset to everyone
+    for (int32_t j = 0; j < N; ++j) buf[j] -= offset;
+}
 #endif
 
 

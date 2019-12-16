@@ -75,6 +75,17 @@ void tfhe_MuxRotate_FFT(TLweSample *result, const TLweSample *accum, const TGswS
     tLweAddTo(result, accum, bk_params->tlwe_params);
 }
 
+void tfhe_MuxRotatelvl2_FFT(TLweSamplelvl2 *result, const TLweSamplelvl2 *accum, const TGswSampleFFT *bki, const int32_t barai,
+                        const TGswParams *bk_params) {
+    // ACC = BKi*[(X^barai-1)*ACC]+ACC
+    // temp = (X^barai-1)*ACC
+    tLwelvl2MulByXaiMinusOne(result, barai, accum, bk_params->tlwe_params);
+    // temp *= BKi
+    tGswFFTExternMulToTLwelvl2(result, bki, bk_params);
+    // ACC += temp
+    tLwelvl2AddTo(result, accum, bk_params->tlwe_params);
+}
+
 
 #if defined INCLUDE_ALL || defined INCLUDE_TFHE_BLIND_ROTATE_FFT
 #undef INCLUDE_TFHE_BLIND_ROTATE_FFT

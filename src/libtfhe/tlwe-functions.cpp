@@ -168,6 +168,14 @@ EXPORT void tLweAddTo(TLweSample *result, const TLweSample *sample, const TLwePa
     torusPolynomialAddTo(result->b, sample->b);
     result->current_variance += sample->current_variance;
 }
+EXPORT void tLwelvl2AddTo(TLweSamplelvl2 *result, const TLweSamplelvl2 *sample, const TLweParams *params) {
+    const int32_t k = params->k;
+
+    for (int32_t i = 0; i < k; ++i)
+        torusPolynomiallvl2AddTo(&result->a[i], &sample->a[i]);
+    torusPolynomiallvl2AddTo(result->b, sample->b);
+    result->current_variance += sample->current_variance;
+}
 
 /** result = result - sample */
 EXPORT void tLweSubTo(TLweSample *result, const TLweSample *sample, const TLweParams *params) {
@@ -217,6 +225,11 @@ EXPORT void tLweMulByXaiMinusOne(TLweSample *result, int32_t ai, const TLweSampl
     const int32_t k = params->k;
     for (int32_t i = 0; i <= k; i++)
         torusPolynomialMulByXaiMinusOne(&result->a[i], ai, &bk->a[i]);
+}
+EXPORT void tLwelvl2MulByXaiMinusOne(TLweSamplelvl2 *result, int32_t ai, const TLweSamplelvl2 *bk, const TLweParams *params) {
+    const int32_t k = params->k;
+    for (int32_t i = 0; i <= k; i++)
+        torusPolynomiallvl2MulByXaiMinusOne(&result->a[i], ai, &bk->a[i]);
 }
 
 /** result += (0,x) */

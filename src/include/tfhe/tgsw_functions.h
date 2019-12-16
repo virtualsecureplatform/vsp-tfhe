@@ -35,6 +35,8 @@ EXPORT void tGswTLweDecompH(IntPolynomial *result, const TLweSample *sample, con
 
 EXPORT void
 tGswTorus32PolynomialDecompH(IntPolynomial *result, const TorusPolynomial *sample, const TGswParams *params);
+EXPORT void
+tGswTorus64PolynomialDecompH(IntPolynomial *result, const TorusPolynomiallvl2 *sample, const TGswParams *params);
 EXPORT void tGswTLweDecompH(IntPolynomial *result, const TLweSample *sample, const TGswParams *params);
 
 //TODO: Ilaria.Theoreme3.5
@@ -65,6 +67,7 @@ EXPORT void tGswFromFFTConvert(TGswSample *result, const TGswSampleFFT *source, 
 EXPORT void tGswFFTAddH(TGswSampleFFT *result, const TGswParams *params);
 EXPORT void tGswFFTClear(TGswSampleFFT *result, const TGswParams *params);
 EXPORT void tGswFFTExternMulToTLwe(TLweSample *accum, const TGswSampleFFT *gsw, const TGswParams *params);
+EXPORT void tGswFFTExternMulToTLwelvl2(TLweSamplelvl2 *accum, const TGswSampleFFT *gsw, const TGswParams *params);
 EXPORT void
 tGswFFTMulByXaiMinusOne(TGswSampleFFT *result, const int32_t ai, const TGswSampleFFT *bki, const TGswParams *params);
 

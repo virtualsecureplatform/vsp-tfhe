@@ -46,6 +46,7 @@ EXPORT void torusPolynomialSubMulZTo(TorusPolynomial* result, int32_t p, const T
 
 /**  TorusPolynomial = (X^a-1)* TorusPolynomial */
 EXPORT void torusPolynomialMulByXaiMinusOne(TorusPolynomial* result, int32_t a, const TorusPolynomial* source);
+EXPORT void torusPolynomiallvl2MulByXaiMinusOne(TorusPolynomiallvl2* result, int32_t a, const TorusPolynomiallvl2* source);
 
 /** result= X^{a}*source */
 EXPORT void torusPolynomialMulByXai(TorusPolynomial* result, int32_t a, const TorusPolynomial* source);
