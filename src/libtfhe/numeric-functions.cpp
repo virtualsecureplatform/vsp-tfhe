@@ -74,6 +74,13 @@ EXPORT int32_t modSwitchFromTorus32(Torus32 phase, int32_t Msize){
     //floor to the nearest multiples of interv
     return phase64/interv;
 }
+EXPORT int32_t modSwitchFromTorus64(Torus64 phase, int64_t Msize){
+    __uint128_t interv = ((__uint128_t(1)<<127)/Msize)*2; // width of each intervall
+    __uint128_t half_interval = interv/2; // begin of the first intervall
+    __uint128_t phase128 = (__uint128_t(phase)<<64) + half_interval;
+    //floor to the nearest multiples of interv
+    return phase128/interv;
+}
 
 // Used to approximate the phase to the nearest message possible in the message space
 // The constant Msize will indicate on which message space we are working (how many messages possible)

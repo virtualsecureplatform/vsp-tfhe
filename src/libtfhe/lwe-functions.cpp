@@ -9,6 +9,8 @@
 #include "lwekey.h"
 #include "lwesamples.h"
 #include "lwekeyswitch.h"
+#include "tlwe.h"
+#include "polynomials.h"
 
 using namespace std;
 
@@ -74,6 +76,16 @@ EXPORT Torus32 lwePhase(const LweSample* sample, const LweKey* key){
     Torus32 axs = 0;
     const Torus32 *__restrict a = sample->a;
     const int32_t * __restrict k = key->key;
+
+    for (int32_t i = 0; i < n; ++i) 
+	   axs += a[i]*k[i]; 
+    return sample->b - axs;
+}
+EXPORT Torus64 lwelvl2Phase(const LweSamplelvl2* sample, const TLweKey* key){
+    const int32_t n = key->params->N;
+    Torus64 axs = 0;
+    const Torus64 *__restrict a = sample->a;
+    const int32_t * __restrict k = key->key->coefs;
 
     for (int32_t i = 0; i < n; ++i) 
 	   axs += a[i]*k[i]; 
@@ -259,10 +271,16 @@ EXPORT void lweSubMulTo(LweSample* result, int32_t p, const LweSample* sample, c
 EXPORT void init_LweSample(LweSample* obj, const LweParams* params) {
     new(obj) LweSample(params);
 }
+EXPORT void init_LweSamplelvl2(LweSamplelvl2* obj, const LweParams* params) {
+    new(obj) LweSamplelvl2(params);
+}
 
 //explicit destructor
 EXPORT void destroy_LweSample(LweSample* obj) {
     obj->~LweSample();
+}
+EXPORT void destroy_LweSamplelvl2(LweSamplelvl2* obj) {
+    obj->~LweSamplelvl2();
 }
 
 //explicit constructor
@@ -277,6 +295,7 @@ EXPORT void destroy_LweKey(LweKey* obj) {
 
 
 USE_DEFAULT_CONSTRUCTOR_DESTRUCTOR_IMPLEMENTATIONS1(LweSample, LweParams);
+USE_DEFAULT_CONSTRUCTOR_DESTRUCTOR_IMPLEMENTATIONS1(LweSamplelvl2, LweParams);
 
 USE_DEFAULT_CONSTRUCTOR_DESTRUCTOR_IMPLEMENTATIONS1(LweKey, LweParams);
 

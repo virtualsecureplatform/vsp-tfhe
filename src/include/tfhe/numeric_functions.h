@@ -43,6 +43,7 @@ EXPORT Torus32 approxPhase(Torus32 phase, int32_t Msize);
  *  computes rountToNearestInteger(Msize*phase)
  */
 EXPORT int32_t modSwitchFromTorus32(Torus32 phase, int32_t Msize);
+EXPORT int32_t modSwitchFromTorus64(Torus64 phase, int64_t Msize);
 
 /**
  *  converts mu/Msize to a Torus32 for mu in [0,Msize[

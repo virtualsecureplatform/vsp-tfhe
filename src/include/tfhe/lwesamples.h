@@ -81,12 +81,13 @@ EXPORT void destroy_LweSample_array(int32_t nbelts, LweSample* ptr);
  * @param params the LWE parameters to use
  */
 EXPORT LweSample* new_LweSample(const LweParams* params);
-EXPORT LweSample* new_LweSamplelvl2(const LweParams* params);
+EXPORT LweSamplelvl2* new_LweSamplelvl2(const LweParams* params);
 /** allocates and initializes (constructor) a single LweSample 
  * @param nbelts the number of consecutive elements to create 
  * @param params the LWE parameters to use
  */
 EXPORT LweSample* new_LweSample_array(int32_t nbelts, const LweParams* params);
+EXPORT LweSamplelvl2* new_LweSamplelvl2_array(int32_t nbelts, const LweParams* params);
 
 /** destroy and frees memory space for a single LweSample 
  * @param ptr the pointer to release */
@@ -96,6 +97,7 @@ EXPORT void delete_LweSamplelvl2(LweSamplelvl2* obj);
  * @param nbelts the number of elements 
  * @param ptr the pointer to release */
 EXPORT void delete_LweSample_array(int32_t nbelts, LweSample* obj);
+EXPORT void delete_LweSamplelvl2_array(int32_t nbelts, LweSamplelvl2* obj);
 
 #endif //LWESAMPLES_H
 

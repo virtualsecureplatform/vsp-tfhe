@@ -249,6 +249,7 @@ EXPORT TLweSamplelvl2 *new_TLweSamplelvl2(const TLweParams *params);
  * @param params the LWE parameters to use
  */
 EXPORT TLweSample *new_TLweSample_array(int32_t nbelts, const TLweParams *params);
+EXPORT TLweSamplelvl2 *new_TLweSamplelvl2_array(int32_t nbelts, const TLweParams *params);
 
 /** destroy and frees memory space for a single TLweSample 
  * @param ptr the pointer to release */

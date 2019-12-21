@@ -31,6 +31,7 @@ set(GOOGLETEST_SOURCES
 
 set(CPP_ITESTS
         test-bootstrapping-fft
+        test-bootstrappinglvl02-fft-woKS
         test-decomp-tgsw
         test-lwe
         test-multiplication

@@ -44,6 +44,7 @@ EXPORT void LagrangeHalfCPolynomialAddTorusConstant(LagrangeHalfCPolynomial* res
 EXPORT void torusPolynomialMultFFT(TorusPolynomial* result, const IntPolynomial* poly1, const TorusPolynomial* poly2);
 EXPORT void torusPolynomialAddMulRFFT(TorusPolynomial* result, const IntPolynomial* poly1, const TorusPolynomial* poly2);
 EXPORT void torusPolynomialSubMulRFFT(TorusPolynomial* result, const IntPolynomial* poly1, const TorusPolynomial* poly2);
+EXPORT void torusPolynomiallvl2SubMulRFFT(TorusPolynomiallvl2* result, const IntPolynomial* poly1, const TorusPolynomiallvl2* poly2);
 
 EXPORT void torusPolynomialMultlvl2FFT(TorusPolynomiallvl2* result, const IntPolynomial* poly1, const TorusPolynomiallvl2* poly2);
 

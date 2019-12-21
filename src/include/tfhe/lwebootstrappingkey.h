@@ -82,7 +82,29 @@ struct LweBootstrappingKeyFFT {
 
 
 };
+struct LweBootstrappingKeylvl02FFT {
+    const LweParams* in_out_params; ///< paramètre de l'input et de l'output. key: s
+    const TGswParams* bk_params; ///< params of the Gsw elems in bk. key: s"
+    const TLweParams* accum_params; ///< params of the accum variable key: s"
+    const TGswSampleFFT* bkFFT; ///< the bootstrapping key (s->s")
+    const TLwePrivKeySwitchKey* privks; ///< the private keyswitch key (s'->s)
 
+
+#ifdef __cplusplus
+   LweBootstrappingKeylvl02FFT(const LweParams* in_out_params, 
+    const TGswParams* bk_params,
+    const TLweParams* accum_params,
+    const LweParams* extract_params, 
+    const TGswSampleFFT* bkFFT,
+    const LweKeySwitchKey* ks);
+    ~LweBootstrappingKeylvl02FFT();
+    LweBootstrappingKeylvl02FFT(const LweBootstrappingKeyFFT&) = delete;
+    void operator=(const LweBootstrappingKeyFFT&) = delete;
+  
+#endif
+
+
+};
 
 //allocate memory space for a LweBootstrappingKey
 EXPORT LweBootstrappingKey* alloc_LweBootstrappingKey();

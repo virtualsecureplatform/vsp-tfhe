@@ -11,6 +11,7 @@ EXPORT void tLweKeyGen(TLweKey *result);
 EXPORT void tLweSymEncrypt(TLweSample *result, TorusPolynomial *message, double alpha, const TLweKey *key);
 EXPORT void tLweSymEncryptT(TLweSample *result, Torus32 message, double alpha, const TLweKey *key);
 EXPORT void tLwePhase(TorusPolynomial *phase, const TLweSample *sample, const TLweKey *key);
+EXPORT void tLwelvl2Phase(TorusPolynomiallvl2 *phase, const TLweSamplelvl2 *sample, const TLweKey *key);
 EXPORT void tLweApproxPhase(TorusPolynomial *message, const TorusPolynomial *phase, int32_t Msize, int32_t N);
 EXPORT void tLweSymDecrypt(TorusPolynomial *result, const TLweSample *sample, const TLweKey *key, int32_t Msize);
 EXPORT Torus32 tLweSymDecryptT(const TLweSample *sample, const TLweKey *key, int32_t Msize);

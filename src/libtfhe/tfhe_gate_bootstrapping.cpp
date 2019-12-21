@@ -78,6 +78,7 @@ new_random_gate_bootstrapping_secret_keyset(const TFheGateBootstrappingParameter
     tfhe_createLweBootstrappingKey(bk, lwe_key, tgsw_key);
     tfhe_createLweBootstrappingKey(bklvl02, lwe_key, tgsw_keylvl2);
     LweBootstrappingKeyFFT *bkFFT = new_LweBootstrappingKeyFFT(bk);
+    // LweBootstrappingKeyFFT *bklvl02FFT = new_LweBootstrappingKeylvl02FFT(bklvl02);
     return new TFheGateBootstrappingSecretKeySet(params, bk, bkFFT, lwe_key, tgsw_key);
 }
 

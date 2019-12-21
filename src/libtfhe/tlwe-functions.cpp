@@ -83,6 +83,14 @@ EXPORT void tLwePhase(TorusPolynomial *phase, const TLweSample *sample, const TL
     for (int32_t i = 0; i < k; ++i)
         torusPolynomialSubMulR(phase, &key->key[i], &sample->a[i]);
 }
+EXPORT void tLwelvl2Phase(TorusPolynomiallvl2 *phase, const TLweSamplelvl2 *sample, const TLweKey *key) {
+    const int32_t k = key->params->k;
+
+    torusPolynomiallvl2Copy(phase, sample->b); // phi = b
+
+    for (int32_t i = 0; i < k; ++i)
+        torusPolynomiallvl2SubMulR(phase, &key->key[i], &sample->a[i]);
+}
 
 
 /**

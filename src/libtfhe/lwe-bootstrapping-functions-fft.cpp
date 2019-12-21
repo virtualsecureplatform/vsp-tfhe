@@ -264,6 +264,38 @@ EXPORT void tfhe_bootstrap_woKS_FFT(LweSample *result,
     delete[] bara;
     delete_TorusPolynomial(testvect);
 }
+EXPORT void tfhe_bootstraplvl02_woKS_FFT(LweSamplelvl2 *result,
+                                    const LweBootstrappingKeyFFT *bk,
+                                    Torus64 mu,
+                                    const LweSample *x) {
+
+    const TGswParams *bk_params = bk->bk_params;
+    const TLweParams *accum_params = bk->accum_params;
+    const LweParams *in_params = bk->in_out_params;
+    const int32_t N = accum_params->N;
+    const int32_t Nx2 = 2 * N;
+    const int32_t n = in_params->n;
+
+    TorusPolynomiallvl2 *testvect = new_TorusPolynomiallvl2(N);
+    int32_t *bara = new int32_t[N];
+
+
+    // Modulus switching
+    int32_t barb = modSwitchFromTorus64(x->b, Nx2);
+    for (int32_t i = 0; i < n; i++) {
+        bara[i] = modSwitchFromTorus64(x->a[i], Nx2);
+    }
+
+    // the initial testvec = [mu,mu,mu,...,mu]
+    for (int32_t i = 0; i < N; i++) testvect->coefsT[i] = mu;
+
+    // Bootstrapping rotation and extraction
+    tfhe_blindRotateAndExtractlvl2_FFT(result, testvect, bk->bkFFT, barb, bara, n, bk_params);
+
+
+    delete[] bara;
+    delete_TorusPolynomiallvl2(testvect);
+}
 #endif
 
 
@@ -345,6 +377,11 @@ EXPORT LweBootstrappingKeyFFT *new_LweBootstrappingKeyFFT(const LweBootstrapping
     init_LweBootstrappingKeyFFT(obj, bk);
     return obj;
 }
+// EXPORT LweBootstrappingKeyFFT *new_LweBootstrappingKeylvl02FFT(const LweBootstrappingKeylvl02 *bk) {
+//     LweBootstrappingKeylvl02FFT *obj = alloc_LweBootstrappingKeylvl02FFT();
+//     init_LweBootstrappingKeylvl02FFT(obj, bk);
+//     return obj;
+// }
 EXPORT LweBootstrappingKeyFFT *new_LweBootstrappingKeyFFT_array(int32_t nbelts, const LweBootstrappingKey *bk) {
     LweBootstrappingKeyFFT *obj = alloc_LweBootstrappingKeyFFT_array(nbelts);
     init_LweBootstrappingKeyFFT_array(nbelts, obj, bk);

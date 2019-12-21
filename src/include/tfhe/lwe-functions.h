@@ -33,6 +33,7 @@ EXPORT void lweSymEncryptWithExternalNoise(LweSample* result, Torus32 message, d
  * This function computes the phase of sample by using key : phi = b - a.s
  */
 EXPORT Torus32 lwePhase(const LweSample* sample, const LweKey* key);
+EXPORT Torus64 lwelvl2Phase(const LweSamplelvl2* sample, const TLweKey* key);
 
 
 /**

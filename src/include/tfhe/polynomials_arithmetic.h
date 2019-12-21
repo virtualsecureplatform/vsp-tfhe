@@ -33,6 +33,7 @@ EXPORT void torusPolynomialSub(TorusPolynomial* result, const TorusPolynomial* p
 
 /**  TorusPolynomial -= TorusPolynomial */
 EXPORT void torusPolynomialSubTo(TorusPolynomial* result, const TorusPolynomial* poly2);
+EXPORT void torusPolynomiallvl2SubTo(TorusPolynomiallvl2* result, const TorusPolynomiallvl2* poly2);
 
 /**  TorusPolynomial + p*TorusPolynomial */
 EXPORT void torusPolynomialAddMulZ(TorusPolynomial* result, const TorusPolynomial* poly1, int32_t p, const TorusPolynomial* poly2);
@@ -122,6 +123,7 @@ EXPORT void torusPolynomiallvl2AddMulRKaratsuba(TorusPolynomiallvl2* result, con
 #define torusPolynomialAddMulR torusPolynomialAddMulRFFT
 #define torusPolynomiallvl2AddMulR torusPolynomiallvl2AddMulRKaratsuba
 #define torusPolynomialSubMulR torusPolynomialSubMulRFFT
+#define torusPolynomiallvl2SubMulR torusPolynomiallvl2SubMulRFFT
 
 
 #endif //POLYNOMIALS_ARITHMETIC_H
